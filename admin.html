@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin – Painel de Edição | Herschel Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --accent: #00f5c4;
+      --accent2: #7c3aed;
+      --bg: #0d0f14;
+      --sidebar: #10121a;
+      --card: #161820;
+      --text: #e8eaf0;
+      --muted: #7b7f8e;
+      --border: rgba(255,255,255,0.07);
+      --danger: #f43f5e;
+      --success: #22c55e;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background: var(--bg); color: var(--text); font-family:'Inter',sans-serif; display:flex; min-height:100vh; }
+
+    /* SIDEBAR */
+    aside {
+      width:250px; background:var(--sidebar); border-right:1px solid var(--border);
+      display:flex; flex-direction:column; padding:1.5rem 0; position:fixed; top:0; bottom:0; left:0; z-index:50;
+    }
+    .sidebar-logo { padding:0 1.5rem 1.5rem; border-bottom:1px solid var(--border); }
+    .sidebar-logo span { display:block; font-size:1.1rem; font-weight:800; }
+    .sidebar-logo span em { color:var(--accent); font-style:normal; }
+    .sidebar-logo small { color:var(--muted); font-size:.75rem; }
+    nav.side-nav { padding:1rem 0; flex:1; }
+    .nav-section { padding:.5rem 1.5rem .3rem; font-size:.7rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+    .nav-item {
+      display:flex; align-items:center; gap:.75rem;
+      padding:.65rem 1.5rem; font-size:.88rem; color:var(--muted);
+      cursor:pointer; transition:.15s; border-left:3px solid transparent;
+    }
+    .nav-item:hover { color:var(--text); background:rgba(255,255,255,0.03); }
+    .nav-item.active { color:var(--accent); border-left-color:var(--accent); background:rgba(0,245,196,0.04); }
+    .nav-item .icon { font-size:1rem; width:20px; text-align:center; }
+    .sidebar-bottom { padding:1rem 1.5rem; border-top:1px solid var(--border); }
+    .user-pill { display:flex; align-items:center; gap:.7rem; }
+    .avatar { width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.85rem; color:#08090d; }
+    .user-pill-info span { display:block; font-size:.82rem; font-weight:600; }
+    .user-pill-info small { color:var(--muted); font-size:.73rem; }
+
+    /* MAIN */
+    main { margin-left:250px; flex:1; display:flex; flex-direction:column; }
+    header.top-bar {
+      position:sticky; top:0; z-index:40;
+      background:rgba(13,15,20,0.9); backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--border);
+      display:flex; justify-content:space-between; align-items:center;
+      padding:.9rem 2rem;
+    }
+    .top-bar h1 { font-size:1rem; font-weight:700; }
+    .top-bar .actions { display:flex; gap:.8rem; }
+    .btn { padding:.5rem 1.1rem; border-radius:8px; font-size:.85rem; font-weight:600; cursor:pointer; border:none; transition:.2s; }
+    .btn-save { background:var(--accent); color:#08090d; }
+    .btn-save:hover { opacity:.85; }
+    .btn-preview { background:rgba(255,255,255,0.07); color:var(--text); border:1px solid var(--border); }
+    .btn-preview:hover { border-color:var(--accent); color:var(--accent); }
+    .status-dot { width:8px; height:8px; border-radius:50%; background:var(--success); animation:pulse 2s infinite; display:inline-block; margin-right:.4rem; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* CONTENT */
+    .content { padding:2rem; flex:1; }
+    .tab-panels > div { display:none; }
+    .tab-panels > div.active { display:block; }
+
+    /* CARDS */
+    .panel-card {
+      background:var(--card); border:1px solid var(--border); border-radius:16px;
+      padding:1.8rem; margin-bottom:1.5rem;
+    }
+    .panel-card h2 { font-size:1rem; font-weight:700; margin-bottom:1.5rem; display:flex; align-items:center; gap:.5rem; }
+    .panel-card h2 span { color:var(--accent); }
+
+    /* FORM */
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .form-group { display:flex; flex-direction:column; gap:.4rem; }
+    .form-group.full { grid-column:1/-1; }
+    label { font-size:.8rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
+    input[type=text], input[type=email], input[type=tel], input[type=url], textarea, select {
+      background:rgba(255,255,255,0.04); border:1px solid var(--border);
+      color:var(--text); padding:.65rem .9rem; border-radius:8px; font-size:.9rem; font-family:'Inter',sans-serif;
+      transition:.2s; width:100%;
+    }
+    input:focus, textarea:focus, select:focus { outline:none; border-color:rgba(0,245,196,0.4); background:rgba(0,245,196,0.02); }
+    textarea { resize:vertical; min-height:90px; }
+
+    /* LIST ITEMS (exp, projects, education) */
+    .list-manager { display:flex; flex-direction:column; gap:1rem; }
+    .list-item {
+      background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:12px;
+      padding:1.2rem; position:relative;
+    }
+    .list-item-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
+    .list-item-header h3 { font-size:.9rem; font-weight:700; }
+    .item-actions { display:flex; gap:.5rem; }
+    .btn-sm { padding:.3rem .7rem; border-radius:6px; font-size:.78rem; font-weight:600; cursor:pointer; border:none; }
+    .btn-del { background:rgba(244,63,94,0.12); color:var(--danger); }
+    .btn-del:hover { background:rgba(244,63,94,0.2); }
+    .btn-move { background:rgba(255,255,255,0.06); color:var(--muted); }
+    .btn-add {
+      display:flex; align-items:center; justify-content:center; gap:.5rem;
+      background:rgba(0,245,196,0.05); border:1px dashed rgba(0,245,196,0.3);
+      color:var(--accent); padding:.9rem; border-radius:12px;
+      font-size:.88rem; font-weight:600; cursor:pointer; transition:.2s; width:100%;
+    }
+    .btn-add:hover { background:rgba(0,245,196,0.1); }
+
+    /* SKILLS EDITOR */
+    .skill-row { display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; padding:.8rem; background:rgba(255,255,255,0.02); border-radius:8px; border:1px solid var(--border); }
+    .skill-chip {
+      display:inline-flex; align-items:center; gap:.4rem;
+      background:rgba(255,255,255,0.06); color:var(--text); font-size:.8rem;
+      padding:.3rem .7rem; border-radius:99px;
+    }
+    .skill-chip button { background:none; border:none; color:var(--muted); cursor:pointer; font-size:.85rem; line-height:1; }
+    .skill-chip button:hover { color:var(--danger); }
+    .skill-add-input { background:transparent; border:none; color:var(--text); font-size:.82rem; padding:.2rem; outline:none; min-width:120px; }
+    .skill-add-input::placeholder { color:var(--muted); }
+
+    /* TOAST */
+    .toast {
+      position:fixed; bottom:2rem; right:2rem; z-index:999;
+      background:var(--success); color:#fff; padding:.8rem 1.5rem; border-radius:10px;
+      font-size:.9rem; font-weight:600; transform:translateY(100px); opacity:0;
+      transition:.3s; pointer-events:none;
+    }
+    .toast.show { transform:translateY(0); opacity:1; }
+
+    /* STATS BAR */
+    .stats-bar { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem; }
+    .stat-mini {
+      background:var(--card); border:1px solid var(--border); border-radius:12px;
+      padding:1.2rem; display:flex; align-items:center; gap:1rem;
+    }
+    .stat-icon { font-size:1.5rem; }
+    .stat-mini-num { font-size:1.4rem; font-weight:800; line-height:1; }
+    .stat-mini-label { font-size:.78rem; color:var(--muted); margin-top:.2rem; }
+
+    @media(max-width:900px){
+      aside { display:none; }
+      main { margin-left:0; }
+      .form-grid { grid-template-columns:1fr; }
+      .stats-bar { grid-template-columns:1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<aside>
+  <div class="sidebar-logo">
+    <span>HM<em>.</em> Admin</span>
+    <small>Painel de Edição</small>
+  </div>
+  <nav class="side-nav">
+    <div class="nav-section">Conteúdo</div>
+    <div class="nav-item active" onclick="showTab('perfil',this)"><span class="icon">👤</span> Perfil</div>
+    <div class="nav-item" onclick="showTab('experiencia',this)"><span class="icon">💼</span> Experiências</div>
+    <div class="nav-item" onclick="showTab('projetos',this)"><span class="icon">🚀</span> Projetos</div>
+    <div class="nav-item" onclick="showTab('skills',this)"><span class="icon">⚡</span> Skills</div>
+    <div class="nav-item" onclick="showTab('educacao',this)"><span class="icon">🎓</span> Educação</div>
+    <div class="nav-section">Configurações</div>
+    <div class="nav-item" onclick="showTab('contato',this)"><span class="icon">📧</span> Contato</div>
+    <div class="nav-item" onclick="showTab('aparencia',this)"><span class="icon">🎨</span> Aparência</div>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="user-pill">
+      <div class="avatar">HM</div>
+      <div class="user-pill-info">
+        <span>Herschel Mateus</span>
+        <small>Administrador</small>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<main>
+  <header class="top-bar">
+    <h1><span class="status-dot"></span>Editor do Portfolio</h1>
+    <div class="actions">
+      <button class="btn btn-preview" onclick="window.open('index.html','_blank')">👁 Visualizar Site</button>
+      <button class="btn btn-save" onclick="saveAll()">💾 Salvar Tudo</button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+      <div class="stat-mini"><div class="stat-icon">💼</div><div><div class="stat-mini-num">6</div><div class="stat-mini-label">Experiências</div></div></div>
+      <div class="stat-mini"><div class="stat-icon">🚀</div><div><div class="stat-mini-num">6</div><div class="stat-mini-label">Projetos</div></div></div>
+      <div class="stat-mini"><div class="stat-icon">⚡</div><div><div class="stat-mini-num">24</div><div class="stat-mini-label">Skills</div></div></div>
+      <div class="stat-mini"><div class="stat-icon">🎓</div><div><div class="stat-mini-num">3</div><div class="stat-mini-label">Formações</div></div></div>
+    </div>
+
+    <div class="tab-panels">
+
+      <!-- PERFIL -->
+      <div id="tab-perfil" class="active">
+        <div class="panel-card">
+          <h2><span>👤</span> Informações do Perfil</h2>
+          <div class="form-grid">
+            <div class="form-group"><label>Nome Completo</label><input type="text" value="Herschel Mateus de Goes"/></div>
+            <div class="form-group"><label>Título Profissional</label><input type="text" value="Full Stack & Data Analyst"/></div>
+            <div class="form-group full"><label>Resumo Profissional</label><textarea>Profissional bilíngue com trajetória sólida em Comércio Exterior e forte atuação em Análise de Dados e Desenvolvimento Full Stack. Capacidade comprovada de unir expertise em importação/exportação à tecnologia para automatizar processos e gerar insights estratégicos.</textarea></div>
+            <div class="form-group"><label>Localização</label><input type="text" value="Santa Regina, Itajaí – SC"/></div>
+            <div class="form-group"><label>Badge de Status</label><input type="text" value="Disponível para oportunidades"/></div>
+          </div>
+        </div>
+        <div class="panel-card">
+          <h2><span>🌍</span> Idiomas</h2>
+          <div class="form-grid">
+            <div class="form-group"><label>Idioma 1</label><input type="text" value="🇧🇷 Português – Nativo"/></div>
+            <div class="form-group"><label>Idioma 2</label><input type="text" value="🇺🇸 Inglês – Intermediário"/></div>
+            <div class="form-group"><label>Idioma 3</label><input type="text" value="🇪🇸 Espanhol – Intermediário"/></div>
+          </div>
+        </div>
+        <div class="panel-card">
+          <h2><span>📊</span> Estatísticas do Hero</h2>
+          <div class="form-grid">
+            <div class="form-group"><label>Stat 1 – Número</label><input type="text" value="7+"/></div>
+            <div class="form-group"><label>Stat 1 – Label</label><input type="text" value="Anos de experiência"/></div>
+            <div class="form-group"><label>Stat 2 – Número</label><input type="text" value="5+"/></div>
+            <div class="form-group"><label>Stat 2 – Label</label><input type="text" value="Empresas atendidas"/></div>
+            <div class="form-group"><label>Stat 3 – Número</label><input type="text" value="3"/></div>
+            <div class="form-group"><label>Stat 3 – Label</label><input type="text" value="Idiomas"/></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPERIÊNCIAS -->
+      <div id="tab-experiencia">
+        <div class="panel-card">
+          <h2><span>💼</span> Experiências Profissionais</h2>
+          <div class="list-manager" id="exp-list">
+
+            <div class="list-item">
+              <div class="list-item-header"><h3>💼 Marilog</h3><div class="item-actions"><button class="btn-sm btn-move">↑↓</button><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+              <div class="form-grid">
+                <div class="form-group"><label>Cargo</label><input type="text" value="Desenvolvedor Full Stack & Analista Logístico (PJ)"/></div>
+                <div class="form-group"><label>Empresa</label><input type="text" value="Marilog"/></div>
+                <div class="form-group"><label>Período</label><input type="text" value="ago/2025 – atual"/></div>
+                <div class="form-group full"><label>Descrição (uma por linha)</label><textarea>Liderança do desenvolvimento de sistema completo de rastreamento veicular e CRM.
+Infraestrutura Oracle Cloud (Ubuntu): SSH, firewall, SSL com Let&#39;s Encrypt.
+Back-end Python/Flask + PostgreSQL; front-end com Leaflet e Chart.js.
+Integração APIs Buonny e NOX GR via cron jobs; pipeline de leads (chatbot) e módulos CRM.</textarea></div>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-item-header"><h3>🌐 Freelancer</h3><div class="item-actions"><button class="btn-sm btn-move">↑↓</button><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+              <div class="form-grid">
+                <div class="form-group"><label>Cargo</label><input type="text" value="Desenvolvedor de Sites (Freelancer)"/></div>
+                <div class="form-group"><label>Empresa</label><input type="text" value="Autônomo"/></div>
+                <div class="form-group"><label>Período</label><input type="text" value="ago/2025 – dez/2025"/></div>
+                <div class="form-group full"><label>Descrição (uma por linha)</label><textarea>Desenvolvimento de sites institucionais e landing pages com HTML, CSS, JS e APIs.
+Configuração de hospedagem, domínios e certificados SSL.</textarea></div>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-item-header"><h3>📦 Nelson Heusi</h3><div class="item-actions"><button class="btn-sm btn-move">↑↓</button><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+              <div class="form-grid">
+                <div class="form-group"><label>Cargo</label><input type="text" value="Analista de Importação Jr."/></div>
+                <div class="form-group"><label>Empresa</label><input type="text" value="Nelson Heusi Logística e Armazéns Gerais LTDA"/></div>
+                <div class="form-group"><label>Período</label><input type="text" value="jan/2025 – ago/2025"/></div>
+                <div class="form-group full"><label>Descrição</label><textarea>Gerenciamento de processos de importação no Siscomex.
+LI, DI, LPCO, CE Mercante, cartas de protesto e documentação IMO.</textarea></div>
+              </div>
+            </div>
+
+          </div>
+          <button class="btn-add" onclick="addExp()">+ Adicionar Experiência</button>
+        </div>
+      </div>
+
+      <!-- PROJETOS -->
+      <div id="tab-projetos">
+        <div class="panel-card">
+          <h2><span>🚀</span> Projetos em Destaque</h2>
+          <div class="list-manager" id="proj-list">
+
+            <div class="list-item">
+              <div class="list-item-header"><h3>🚛 Sistema Marilog</h3><div class="item-actions"><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+              <div class="form-grid">
+                <div class="form-group"><label>Emoji/Ícone</label><input type="text" value="🚛"/></div>
+                <div class="form-group"><label>Nome do Projeto</label><input type="text" value="Sistema Marilog"/></div>
+                <div class="form-group full"><label>Descrição</label><textarea>Sistema completo de rastreamento veicular e CRM do zero, unindo logística, full stack e cloud com visualização em tempo real.</textarea></div>
+                <div class="form-group full"><label>Tecnologias (separadas por vírgula)</label><input type="text" value="Python/Flask, PostgreSQL, Leaflet.js, Oracle Cloud, APIs REST"/></div>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-item-header"><h3>📊 Dashboards BI</h3><div class="item-actions"><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+              <div class="form-grid">
+                <div class="form-group"><label>Emoji/Ícone</label><input type="text" value="📊"/></div>
+                <div class="form-group"><label>Nome do Projeto</label><input type="text" value="Dashboards BI & Automação"/></div>
+                <div class="form-group full"><label>Descrição</label><textarea>Dashboards interativos em Power BI e Excel para controle de armazém, faturamento e visibilidade estratégica.</textarea></div>
+                <div class="form-group full"><label>Tecnologias</label><input type="text" value="Power BI, SQL, Excel Avançado, ETL"/></div>
+              </div>
+            </div>
+
+          </div>
+          <button class="btn-add" onclick="addProject()">+ Adicionar Projeto</button>
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div id="tab-skills">
+        <div class="panel-card">
+          <h2><span>⚡</span> Grupos de Skills</h2>
+          <div class="list-manager">
+
+            <div class="list-item">
+              <div class="list-item-header"><h3>🌐 Comércio Exterior</h3><div class="item-actions"><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+              <div class="form-group" style="margin-bottom:.8rem"><label>Nome do Grupo</label><input type="text" value="Comércio Exterior"/></div>
+              <div class="skill-row" id="skills-comex">
+                <span class="skill-chip">Importação<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">Exportação<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">Desembaraço Aduaneiro<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">LPCO<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">LI / DI<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">CE Mercante<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">Siscomex<button onclick="removeChip(this)">×</button></span>
+                <input class="skill-add-input" placeholder="+ adicionar skill..." onkeydown="addChip(event,this)"/>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-item-header"><h3>📊 Análise de Dados & BI</h3><div class="item-actions"><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+              <div class="form-group" style="margin-bottom:.8rem"><label>Nome do Grupo</label><input type="text" value="Análise de Dados & BI"/></div>
+              <div class="skill-row">
+                <span class="skill-chip">Power BI<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">SQL<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">PostgreSQL<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">ETL<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">Modelagem de Dados<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">Excel Avançado<button onclick="removeChip(this)">×</button></span>
+                <input class="skill-add-input" placeholder="+ adicionar skill..." onkeydown="addChip(event,this)"/>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-item-header"><h3>💻 Dev & Infraestrutura</h3><div class="item-actions"><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+              <div class="form-group" style="margin-bottom:.8rem"><label>Nome do Grupo</label><input type="text" value="Dev & Infraestrutura"/></div>
+              <div class="skill-row">
+                <span class="skill-chip">Python (Flask)<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">JavaScript<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">HTML/CSS<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">APIs REST<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">Linux (Ubuntu)<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">Nginx<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">Git<button onclick="removeChip(this)">×</button></span>
+                <span class="skill-chip">Oracle Cloud<button onclick="removeChip(this)">×</button></span>
+                <input class="skill-add-input" placeholder="+ adicionar skill..." onkeydown="addChip(event,this)"/>
+              </div>
+            </div>
+
+          </div>
+          <button class="btn-add" onclick="addSkillGroup()">+ Adicionar Grupo</button>
+        </div>
+      </div>
+
+      <!-- EDUCAÇÃO -->
+      <div id="tab-educacao">
+        <div class="panel-card">
+          <h2><span>🎓</span> Formação Acadêmica</h2>
+          <div class="list-manager" id="edu-list">
+
+            <div class="list-item">
+              <div class="list-item-header"><h3>SCTech – SENAI-SC</h3><div class="item-actions"><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+              <div class="form-grid">
+                <div class="form-group"><label>Curso</label><input type="text" value="Desenvolvimento de Sistemas"/></div>
+                <div class="form-group"><label>Instituição</label><input type="text" value="SCTech – Governo de SC / SENAI-SC"/></div>
+                <div class="form-group"><label>Ano</label><input type="text" value="2026"/></div>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-item-header"><h3>Alura</h3><div class="item-actions"><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+              <div class="form-grid">
+                <div class="form-group"><label>Curso</label><input type="text" value="Técnico em Análise de Dados"/></div>
+                <div class="form-group"><label>Instituição</label><input type="text" value="Alura"/></div>
+                <div class="form-group"><label>Ano</label><input type="text" value="2025"/></div>
+              </div>
+            </div>
+
+            <div class="list-item">
+              <div class="list-item-header"><h3>Uniasselvi</h3><div class="item-actions"><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+              <div class="form-grid">
+                <div class="form-group"><label>Curso</label><input type="text" value="Tecnólogo em Comércio Exterior"/></div>
+                <div class="form-group"><label>Instituição</label><input type="text" value="Uniasselvi, Itajaí"/></div>
+                <div class="form-group"><label>Ano</label><input type="text" value="2022"/></div>
+              </div>
+            </div>
+
+          </div>
+          <button class="btn-add" onclick="addEdu()">+ Adicionar Formação</button>
+        </div>
+      </div>
+
+      <!-- CONTATO -->
+      <div id="tab-contato">
+        <div class="panel-card">
+          <h2><span>📧</span> Informações de Contato</h2>
+          <div class="form-grid">
+            <div class="form-group"><label>E-mail</label><input type="email" value="herschel.mateus@outlook.com.br"/></div>
+            <div class="form-group"><label>Telefone / WhatsApp</label><input type="tel" value="(47) 99284-2056"/></div>
+            <div class="form-group full"><label>LinkedIn URL</label><input type="url" value="https://linkedin.com/in/herschel-mateus-a8a178305"/></div>
+            <div class="form-group full"><label>GitHub URL (opcional)</label><input type="url" placeholder="https://github.com/..."/></div>
+            <div class="form-group full"><label>Mensagem da Seção de Contato</label><textarea>Aberto a novas oportunidades em Desenvolvimento Full Stack, Análise de Dados ou Comércio Exterior. Vamos construir algo incrível juntos.</textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APARÊNCIA -->
+      <div id="tab-aparencia">
+        <div class="panel-card">
+          <h2><span>🎨</span> Cores do Tema</h2>
+          <div class="form-grid">
+            <div class="form-group"><label>Cor de Destaque Principal</label><input type="text" value="#00f5c4"/></div>
+            <div class="form-group"><label>Cor de Destaque Secundária</label><input type="text" value="#7c3aed"/></div>
+            <div class="form-group"><label>Cor de Fundo</label><input type="text" value="#08090d"/></div>
+            <div class="form-group"><label>Cor dos Cards</label><input type="text" value="#12141a"/></div>
+          </div>
+        </div>
+        <div class="panel-card">
+          <h2><span>✍️</span> Textos do Hero</h2>
+          <div class="form-grid">
+            <div class="form-group full"><label>Subtítulo do Hero</label><textarea style="min-height:60px">Profissional bilíngue que une Comércio Exterior, Desenvolvimento Full Stack e Análise de Dados para criar soluções tecnológicas de alto impacto.</textarea></div>
+            <div class="form-group"><label>Texto do Botão Primário</label><input type="text" value="Ver Projetos"/></div>
+            <div class="form-group"><label>Texto do Botão Secundário</label><input type="text" value="Falar Comigo"/></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast">✅ Alterações salvas com sucesso!</div>
+
+<script>
+function showTab(name, el) {
+  document.querySelectorAll('.tab-panels > div').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  el.classList.add('active');
+}
+
+function removeItem(btn) {
+  if(confirm('Remover este item?')) btn.closest('.list-item').remove();
+}
+
+function removeChip(btn) {
+  btn.closest('.skill-chip').remove();
+}
+
+function addChip(e, input) {
+  if(e.key === 'Enter' && input.value.trim()) {
+    const chip = document.createElement('span');
+    chip.className = 'skill-chip';
+    chip.innerHTML = input.value.trim() + '<button onclick="removeChip(this)">×</button>';
+    input.parentNode.insertBefore(chip, input);
+    input.value = '';
+  }
+}
+
+function addExp() {
+  const item = document.createElement('div');
+  item.className = 'list-item';
+  item.innerHTML = `<div class="list-item-header"><h3>💼 Nova Experiência</h3><div class="item-actions"><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+  <div class="form-grid">
+    <div class="form-group"><label>Cargo</label><input type="text" placeholder="Ex: Desenvolvedor Backend"/></div>
+    <div class="form-group"><label>Empresa</label><input type="text" placeholder="Nome da empresa"/></div>
+    <div class="form-group"><label>Período</label><input type="text" placeholder="Ex: jan/2024 – atual"/></div>
+    <div class="form-group full"><label>Descrição</label><textarea placeholder="Uma responsabilidade por linha..."></textarea></div>
+  </div>`;
+  document.getElementById('exp-list').appendChild(item);
+}
+
+function addProject() {
+  const item = document.createElement('div');
+  item.className = 'list-item';
+  item.innerHTML = `<div class="list-item-header"><h3>🚀 Novo Projeto</h3><div class="item-actions"><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+  <div class="form-grid">
+    <div class="form-group"><label>Emoji</label><input type="text" placeholder="🔧"/></div>
+    <div class="form-group"><label>Nome</label><input type="text" placeholder="Nome do projeto"/></div>
+    <div class="form-group full"><label>Descrição</label><textarea></textarea></div>
+    <div class="form-group full"><label>Tecnologias (separadas por vírgula)</label><input type="text"/></div>
+  </div>`;
+  document.getElementById('proj-list').appendChild(item);
+}
+
+function addEdu() {
+  const item = document.createElement('div');
+  item.className = 'list-item';
+  item.innerHTML = `<div class="list-item-header"><h3>🎓 Nova Formação</h3><div class="item-actions"><button class="btn-sm btn-del" onclick="removeItem(this)">✕ Remover</button></div></div>
+  <div class="form-grid">
+    <div class="form-group"><label>Curso</label><input type="text"/></div>
+    <div class="form-group"><label>Instituição</label><input type="text"/></div>
+    <div class="form-group"><label>Ano</label><input type="text"/></div>
+  </div>`;
+  document.getElementById('edu-list').appendChild(item);
+}
+
+function addSkillGroup() {
+  alert('Funcionalidade: grupo de skill será adicionado via backend na integração com API.');
+}
+
+function saveAll() {
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+  // Aqui você conecta com sua API Flask para persistir os dados
+  // fetch('/api/save', { method:'POST', body: JSON.stringify(collectData()) });
+}
+</script>
+</body>
+</html>
