@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Herschel Mateus — Comércio Exterior & Tech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #080c14;
+      --bg2: #0d1420;
+      --bg3: #111926;
+      --accent: #00c2ff;
+      --accent2: #0072ff;
+      --gold: #c9a84c;
+      --text: #e8edf5;
+      --muted: #6b7a99;
+      --border: rgba(255,255,255,0.06);
+      --card: rgba(255,255,255,0.03);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; justify-content:space-between; align-items:center;
+      padding: 1.2rem 5vw;
+      background: rgba(8,12,20,0.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight:700; font-size:1.1rem; letter-spacing:.03em;
+      color: var(--text);
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display:flex; gap:2rem; list-style:none; }
+    .nav-links a {
+      color: var(--muted); font-size:.85rem; font-weight:500;
+      text-decoration:none; letter-spacing:.06em; text-transform:uppercase;
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      padding: 120px 5vw 80px;
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background: radial-gradient(ellipse 70% 60% at 60% 40%, rgba(0,114,255,.12) 0%, transparent 70%),
+                  radial-gradient(ellipse 40% 40% at 15% 80%, rgba(201,168,76,.06) 0%, transparent 60%);
+    }
+    .grid-overlay {
+      position:absolute; inset:0; opacity:.18;
+      background-image:
+        linear-gradient(rgba(0,194,255,.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,194,255,.15) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+    .hero-content {
+      position:relative; z-index:2;
+      max-width: 760px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items:center; gap:.6rem;
+      background: rgba(201,168,76,.1);
+      border: 1px solid rgba(201,168,76,.25);
+      color: var(--gold);
+      padding: .4rem 1rem; border-radius:100px;
+      font-size:.75rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+      margin-bottom: 1.6rem;
+    }
+    .badge-dot {
+      width:6px; height:6px; border-radius:50%;
+      background: var(--gold);
+      box-shadow: 0 0 6px var(--gold);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800; line-height: 1.08;
+      letter-spacing: -.03em;
+      margin-bottom: 1.4rem;
+    }
+    .hero h1 .line-accent { color: var(--accent); }
+    .hero h1 .line-dim { color: var(--muted); font-weight:300; }
+
+    .hero-sub {
+      font-size:1.05rem; color: var(--muted); line-height:1.7;
+      max-width: 560px; margin-bottom: 2.4rem;
+    }
+    .hero-sub strong { color: var(--text); font-weight:500; }
+
+    .hero-cta { display:flex; gap:1rem; flex-wrap:wrap; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      color: #fff; padding: .8rem 2rem;
+      border-radius: 8px; font-weight:600; font-size:.9rem;
+      text-decoration:none; transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 24px rgba(0,194,255,.25);
+    }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,194,255,.4); }
+    .btn-outline {
+      border: 1px solid var(--border);
+      background: var(--card); color: var(--text);
+      padding: .8rem 2rem; border-radius:8px;
+      font-weight:500; font-size:.9rem; text-decoration:none;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-outline:hover { border-color: rgba(0,194,255,.4); background: rgba(0,194,255,.05); }
+
+    .hero-stats {
+      display: flex; gap:3rem; margin-top: 3.5rem;
+      padding-top: 2.5rem; border-top: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size:2rem; font-weight:700; color: var(--text);
+      line-height:1;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size:.75rem; color: var(--muted); margin-top:.3rem; text-transform:uppercase; letter-spacing:.06em; }
+
+    /* ── SECTIONS ── */
+    section { padding: 90px 5vw; }
+    .section-label {
+      font-size:.7rem; font-weight:700; letter-spacing:.15em;
+      text-transform:uppercase; color: var(--accent);
+      margin-bottom: .8rem;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight:700; letter-spacing:-.02em;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      color: var(--muted); font-size:.95rem; line-height:1.7;
+      max-width:580px; margin-bottom:3rem;
+    }
+
+    /* ── SKILLS ── */
+    .skills-section { background: var(--bg2); }
+    .skills-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem; }
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      transition: border-color .3s, transform .3s;
+    }
+    .skill-card:hover { border-color: rgba(0,194,255,.25); transform:translateY(-4px); }
+    .skill-card-icon {
+      width:44px; height:44px; border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:1.2rem; font-size:1.2rem;
+    }
+    .icon-blue  { background: rgba(0,114,255,.15); color: var(--accent); }
+    .icon-gold  { background: rgba(201,168,76,.15); color: var(--gold); }
+    .icon-green { background: rgba(0,220,130,.15); color: #00dc82; }
+    .skill-card h3 { font-size:.95rem; font-weight:600; margin-bottom:.8rem; }
+    .tags { display:flex; flex-wrap:wrap; gap:.4rem; }
+    .tag {
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      color: var(--muted); font-size:.72rem;
+      padding:.25rem .65rem; border-radius:6px; font-weight:500;
+    }
+
+    /* ── EXPERIENCE ── */
+    .exp-section { background: var(--bg); }
+    .timeline { position:relative; }
+    .timeline::before {
+      content:''; position:absolute;
+      left:0; top:8px; bottom:8px; width:1px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+    }
+    .exp-item {
+      padding-left:2.5rem; position:relative;
+      margin-bottom:3rem;
+    }
+    .exp-dot {
+      position:absolute; left:-5px; top:6px;
+      width:11px; height:11px; border-radius:50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(0,194,255,.6);
+    }
+    .exp-dot.gold { background: var(--gold); box-shadow: 0 0 12px rgba(201,168,76,.6); }
+    .exp-meta {
+      display:flex; align-items:center; gap:1rem;
+      margin-bottom:.5rem; flex-wrap:wrap;
+    }
+    .exp-company {
+      font-size:.75rem; font-weight:600; letter-spacing:.08em;
+      text-transform:uppercase; color: var(--accent);
+    }
+    .exp-company.gold { color: var(--gold); }
+    .exp-period {
+      font-size:.72rem; color: var(--muted);
+      background: var(--card); border:1px solid var(--border);
+      padding:.15rem .55rem; border-radius:4px;
+    }
+    .exp-role { font-size:1.05rem; font-weight:600; margin-bottom:.5rem; }
+    .exp-desc {
+      color: var(--muted); font-size:.88rem; line-height:1.65;
+    }
+    .exp-desc li { margin-bottom:.25rem; padding-left:.3rem; }
+    .exp-desc ul { padding-left:1rem; }
+
+    /* ── ABOUT ── */
+    .about-section {
+      background: var(--bg3);
+      display:grid; grid-template-columns: 1fr 1fr; gap:5rem; align-items:center;
+    }
+    .about-text .section-desc { max-width:100%; margin-bottom:1.5rem; }
+    .lang-list { display:flex; flex-direction:column; gap:.7rem; }
+    .lang-item { display:flex; align-items:center; gap:1rem; }
+    .lang-name { font-size:.85rem; font-weight:500; min-width:90px; }
+    .lang-bar {
+      flex:1; height:4px; background: var(--border);
+      border-radius:10px; overflow:hidden;
+    }
+    .lang-fill { height:100%; border-radius:10px; background: linear-gradient(90deg, var(--accent2), var(--accent)); }
+    .lang-level { font-size:.75rem; color: var(--muted); min-width:80px; text-align:right; }
+
+    .about-edu {}
+    .edu-card {
+      background: var(--card); border:1px solid var(--border);
+      border-radius:12px; padding:1.4rem 1.6rem;
+      margin-bottom:1rem;
+      display:flex; justify-content:space-between; align-items:flex-start;
+    }
+    .edu-name { font-size:.9rem; font-weight:600; margin-bottom:.25rem; }
+    .edu-inst { font-size:.78rem; color: var(--muted); }
+    .edu-year {
+      font-family:'Space Grotesk',sans-serif;
+      font-size:1rem; font-weight:700; color: var(--accent);
+    }
+
+    /* ── ACHIEVEMENTS ── */
+    .achievements-section { background: var(--bg2); }
+    .achievements-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:1.2rem; }
+    .achiev-card {
+      background: var(--card); border:1px solid var(--border);
+      border-radius:14px; padding:1.6rem;
+      transition: border-color .3s;
+    }
+    .achiev-card:hover { border-color: rgba(201,168,76,.3); }
+    .achiev-line {
+      width:32px; height:3px; border-radius:3px;
+      background: linear-gradient(90deg, var(--gold), var(--accent));
+      margin-bottom:1rem;
+    }
+    .achiev-card h3 { font-size:.9rem; font-weight:600; margin-bottom:.4rem; }
+    .achiev-card p { font-size:.82rem; color: var(--muted); line-height:1.6; }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      background: var(--bg);
+      text-align:center;
+    }
+    .contact-section .section-desc { margin-left:auto; margin-right:auto; }
+    .contact-cards {
+      display:flex; justify-content:center; gap:1.5rem; flex-wrap:wrap;
+    }
+    .contact-card {
+      background: var(--card); border:1px solid var(--border);
+      border-radius:14px; padding:1.4rem 2rem;
+      text-decoration:none; color: var(--text);
+      display:flex; align-items:center; gap:1rem;
+      transition: border-color .3s, transform .3s;
+    }
+    .contact-card:hover { border-color: rgba(0,194,255,.3); transform:translateY(-3px); }
+    .contact-card-icon {
+      width:40px; height:40px; border-radius:10px;
+      background: rgba(0,114,255,.12);
+      display:flex; align-items:center; justify-content:center;
+      color: var(--accent); font-size:1rem; font-weight:700;
+    }
+    .contact-card-text strong { display:block; font-size:.85rem; font-weight:600; }
+    .contact-card-text span { font-size:.78rem; color: var(--muted); }
+
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding:2rem 5vw;
+      display:flex; justify-content:space-between; align-items:center;
+      flex-wrap:wrap; gap:1rem;
+    }
+    footer p { font-size:.78rem; color: var(--muted); }
+    footer span { color: var(--accent); }
+
+    /* WHATSAPP FLOATING BUTTON */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(37,211,102,0.4);
+      z-index: 9999;
+      transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+    }
+    .whatsapp-float:hover {
+      transform: scale(1.1) translateY(-4px);
+      box-shadow: 0 12px 32px rgba(37,211,102,0.6);
+    }
+    .whatsapp-float:active { transform: scale(0.98); }
+    .whatsapp-icon {
+      width: 28px; height: 28px; color: white;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+    }
+    .whatsapp-tooltip {
+      position: absolute; bottom: 100%; right: 0;
+      background: var(--card); color: var(--text);
+      padding: .5rem 1rem; border-radius: 8px;
+      font-size: .75rem; font-weight: 500;
+      white-space: nowrap;
+      opacity: 0; visibility: hidden;
+      transition: all .2s;
+      border: 1px solid var(--border);
+      margin-bottom: .5rem;
+    }
+    .whatsapp-float:hover .whatsapp-tooltip {
+      opacity: 1; visibility: visible;
+    }
+
+    @media(max-width:768px) {
+      .about-section { grid-template-columns:1fr; gap:2.5rem; }
+      .hero-stats { gap:2rem; }
+      .nav-links { display:none; }
+      .whatsapp-float { bottom: 1.5rem; right: 1.5rem; width: 56px; height: 56px; }
+      .whatsapp-icon { width: 24px; height: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">HM<span>.</span>goes</div>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#habilidades">Habilidades</a></li>
+    <li><a href="#experiencia">Experiência</a></li>
+    <li><a href="#formacao">Formação</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="grid-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="badge-dot"></div>
+      Disponível para oportunidades
+    </div>
+    <h1>
+      Herschel Mateus<br/>
+      <span class="line-accent">Comércio Exterior</span><br/>
+      <span class="line-dim">& Full Stack</span>
+    </h1>
+    <p class="hero-sub">
+      Profissional bilíngue com <strong>sólida trajetória em importação e exportação</strong>,
+      combinada à capacidade técnica de desenvolver sistemas e dashboards que transformam
+      operações aduaneiras em <strong>vantagem competitiva</strong>.
+    </p>
+    <div class="hero-cta">
+      <a href="#experiencia" class="btn-primary">Ver Experiência</a>
+      <a href="#contato" class="btn-outline">Entrar em contato</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">7<span>+</span></div>
+        <div class="stat-label">Anos de carreira</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3<span></span></div>
+        <div class="stat-label">Idiomas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">360<span>°</span></div>
+        <div class="stat-label">Visão operacional</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HABILIDADES -->
+<section class="skills-section" id="habilidades">
+  <div class="section-label">Competências</div>
+  <h2 class="section-title">Habilidades Técnicas</h2>
+  <p class="section-desc">Domínio nas três frentes que definem o comércio exterior moderno: operação aduaneira, inteligência de dados e desenvolvimento de sistemas.</p>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-card-icon icon-gold">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <h3>Comércio Exterior</h3>
+      <div class="tags">
+        <span class="tag">Importação</span><span class="tag">Exportação</span>
+        <span class="tag">Desembaraço Aduaneiro</span><span class="tag">LPCO</span>
+        <span class="tag">LI / DI</span><span class="tag">CE Mercante</span>
+        <span class="tag">Fechamento de Câmbio</span><span class="tag">B/L</span>
+        <span class="tag">Agentes de Carga</span><span class="tag">Siscomex</span>
+        <span class="tag">Carga IMO</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon icon-blue">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <h3>Análise de Dados & BI</h3>
+      <div class="tags">
+        <span class="tag">Power BI</span><span class="tag">SQL Server</span>
+        <span class="tag">PostgreSQL</span><span class="tag">Modelagem de Dados</span>
+        <span class="tag">ETL</span><span class="tag">Excel Avançado</span>
+        <span class="tag">Dashboards</span><span class="tag">Painéis em Tempo Real</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon icon-green">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      </div>
+      <h3>Dev & Infraestrutura</h3>
+      <div class="tags">
+        <span class="tag">Python / Flask</span><span class="tag">JavaScript</span>
+        <span class="tag">HTML / CSS</span><span class="tag">APIs REST</span>
+        <span class="tag">Linux Ubuntu</span><span class="tag">Nginx</span>
+        <span class="tag">Oracle Cloud</span><span class="tag">Git</span>
+        <span class="tag">Gunicorn</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIÊNCIA -->
+<section class="exp-section" id="experiencia">
+  <div class="section-label">Trajetória</div>
+  <h2 class="section-title">Experiência Profissional</h2>
+  <p class="section-desc">Uma trajetória que começa no porto e chega à nuvem — cada passo construindo uma visão única entre operação e tecnologia.</p>
+
+  <div class="timeline">
+
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div class="exp-meta">
+        <span class="exp-company">Marilog</span>
+        <span class="exp-period">ago/2025 — atual</span>
+      </div>
+      <div class="exp-role">Desenvolvedor Full Stack & Analista Logístico</div>
+      <div class="exp-desc">
+        <ul>
+          <li>Liderança no desenvolvimento de sistema completo de rastreamento veicular e CRM — do servidor à interface.</li>
+          <li>Infraestrutura Oracle Cloud (Ubuntu): SSH, firewall, SSL com Let's Encrypt.</li>
+          <li>Back-end Python/Flask + PostgreSQL; front-end com Leaflet e Chart.js em tempo real.</li>
+          <li>Integração de APIs de rastreamento (Buonny, NOX GR) via cron jobs.</li>
+          <li>Programação de carga, emissão de CT-e e gestão de frota.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-dot gold"></div>
+      <div class="exp-meta">
+        <span class="exp-company gold">Nelson Heusi Logística</span>
+        <span class="exp-period">jan/2025 — ago/2025</span>
+      </div>
+      <div class="exp-role">Analista de Importação Jr.</div>
+      <div class="exp-desc">
+        <ul>
+          <li>Registro e acompanhamento de operações de importação no Siscomex.</li>
+          <li>Gestão de LI, DI, LPCO, CE Mercante, cartas de protesto e documentação IMO.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div class="exp-meta">
+        <span class="exp-company">JET</span>
+        <span class="exp-period">jul/2024 — dez/2024</span>
+      </div>
+      <div class="exp-role">Consultor Logístico</div>
+      <div class="exp-desc">
+        <ul>
+          <li>Criação de métodos logísticos de alta performance para otimização de processos.</li>
+          <li>Desenvolvimento de banco de dados e dashboards em tempo real com Power BI e SQL.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-dot gold"></div>
+      <div class="exp-meta">
+        <span class="exp-company gold">EasyLog</span>
+        <span class="exp-period">jan/2024 — mar/2024</span>
+      </div>
+      <div class="exp-role">Analista de Exportação Jr.</div>
+      <div class="exp-desc">
+        <ul>
+          <li>Acompanhamento completo de exportações: da carga à emissão de B/L e faturas comerciais.</li>
+          <li>Suporte no fechamento de câmbio e contato com agentes de carga internacionais.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div class="exp-meta">
+        <span class="exp-company">ScanSource Brasil</span>
+        <span class="exp-period">fev/2021 — jan/2024</span>
+      </div>
+      <div class="exp-role">Operador Logístico</div>
+      <div class="exp-desc">
+        <ul>
+          <li>Coordenação de equipe de faturamento e gestão de armazém com acuracidade de estoque.</li>
+          <li>Automação de relatórios operacionais via Excel avançado. Promovido em ago/2022.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-dot gold"></div>
+      <div class="exp-meta">
+        <span class="exp-company gold">E. M. M. Serviços</span>
+        <span class="exp-period">mar/2020 — fev/2021</span>
+      </div>
+      <div class="exp-role">Lavador de Contêineres</div>
+      <div class="exp-desc">Experiência portuária inicial — responsável pela limpeza e preparação de contêineres para novos carregamentos.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SOBRE / FORMAÇÃO -->
+<section class="about-section" id="formacao">
+  <div class="about-text">
+    <div class="section-label">Perfil</div>
+    <h2 class="section-title">Sobre mim</h2>
+    <p class="section-desc">
+      Profissional com visão ponta a ponta do comércio exterior — da operação portuária ao desembaraço aduaneiro — complementada por habilidade técnica para automatizar processos e construir sistemas de inteligência logística. Qualificado pelo programa SCTech (Governo de SC / SENAI-SC) e em constante evolução na interseção entre trade e tecnologia.
+    </p>
+    <div class="section-label" style="margin-top:1.5rem;">Idiomas</div>
+    <div class="lang-list" style="margin-top:.8rem;">
+      <div class="lang-item">
+        <span class="lang-name">Português</span>
+        <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
+        <span class="lang-level">Nativo</span>
+      </div>
+      <div class="lang-item">
+        <span class="lang-name">Inglês</span>
+        <div class="lang-bar"><div class="lang-fill" style="width:60%"></div></div>
+        <span class="lang-level">Intermediário</span>
+      </div>
+      <div class="lang-item">
+        <span class="lang-name">Espanhol</span>
+        <div class="lang-bar"><div class="lang-fill" style="width:55%"></div></div>
+        <span class="lang-level">Intermediário</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-edu" id="sobre">
+    <div class="section-label">Formação</div>
+    <h2 class="section-title" style="margin-bottom:1.5rem;">Educação</h2>
+    <div class="edu-card">
+      <div>
+        <div class="edu-name">Desenvolvimento de Sistemas</div>
+        <div class="edu-inst">SCTech — Governo de SC / SENAI-SC</div>
+      </div>
+      <div class="edu-year">2026</div>
+    </div>
+    <div class="edu-card">
+      <div>
+        <div class="edu-name">Técnico em Análise de Dados</div>
+        <div class="edu-inst">Alura</div>
+      </div>
+      <div class="edu-year">2025</div>
+    </div>
+    <div class="edu-card">
+      <div>
+        <div class="edu-name">Tecnólogo em Comércio Exterior</div>
+        <div class="edu-inst">Uniasselvi, Itajaí — SC</div>
+      </div>
+      <div class="edu-year">2022</div>
+    </div>
+  </div>
+</section>
+
+<!-- REALIZAÇÕES -->
+<section class="achievements-section">
+  <div class="section-label">Destaques</div>
+  <h2 class="section-title">Principais Realizações</h2>
+  <p class="section-desc">Projetos e marcos que demonstram a capacidade de unir operação, dados e tecnologia.</p>
+  <div class="achievements-grid">
+    <div class="achiev-card">
+      <div class="achiev-line"></div>
+      <h3>Sistema Marilog</h3>
+      <p>Liderança do desenvolvimento de rastreamento veicular e CRM do zero, unindo logística operacional, full stack e infraestrutura em nuvem.</p>
+    </div>
+    <div class="achiev-card">
+      <div class="achiev-line"></div>
+      <h3>SCTech / SENAI-SC</h3>
+      <p>Qualificação em desenvolvimento de sistemas e inteligência artificial pelo programa do Governo de Santa Catarina.</p>
+    </div>
+    <div class="achiev-card">
+      <div class="achiev-line"></div>
+      <h3>Migração Estratégica</h3>
+      <p>Transição bem-sucedida de Comércio Exterior para Desenvolvimento e Análise de Dados, sem abrir mão da expertise em trade.</p>
+    </div>
+    <div class="achiev-card">
+      <div class="achiev-line"></div>
+      <h3>BI & Automação</h3>
+      <p>Dashboards interativos em Power BI e Excel para controle de armazém e faturamento na ScanSource Brasil.</p>
+    </div>
+    <div class="achiev-card">
+      <div class="achiev-line"></div>
+      <h3>Visão Ponta a Ponta</h3>
+      <p>Experiência completa: importação (Nelson Heusi), exportação (EasyLog) e operação portuária (E.M.M.) — domínio do fluxo inteiro.</p>
+    </div>
+    <div class="achiev-card">
+      <div class="achiev-line"></div>
+      <h3>Infraestrutura Cloud</h3>
+      <p>Deploy e manutenção de ambiente de produção completo na Oracle Cloud com segurança, SSL e integração de APIs externas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section class="contact-section" id="contato">
+  <div class="section-label">Contato</div>
+  <h2 class="section-title">Vamos conversar</h2>
+  <p class="section-desc">Aberto a oportunidades em Comércio Exterior, Análise de Dados e Desenvolvimento. Baseado em Itajaí — SC.</p>
+  <div class="contact-cards">
+    <a href="mailto:herschel.mateus@outlook.com.br" class="contact-card">
+      <div class="contact-card-icon">@</div>
+      <div class="contact-card-text">
+        <strong>E-mail</strong>
+        <span>herschel.mateus@outlook.com.br</span>
+      </div>
+    </a>
+    <a href="tel:+5547992842056" class="contact-card">
+      <div class="contact-card-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.9 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <div class="contact-card-text">
+        <strong>Telefone</strong>
+        <span>(47) 99284-2056</span>
+      </div>
+    </a>
+    <a href="https://linkedin.com/in/herschel-mateus-a8a178305" target="_blank" class="contact-card">
+      <div class="contact-card-icon">in</div>
+      <div class="contact-card-text">
+        <strong>LinkedIn</strong>
+        <span>herschel-mateus</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>Herschel Mateus de Goes — Itajaí, SC</p>
+  <p>Comércio Exterior <span>×</span> Full Stack <span>×</span> Dados</p>
+</footer>
+
+<!-- BOTÃO WHATSAPP -->
+<a href="https://wa.me/5547992842056?text=Ol%C3%A1%20Herschel%2C%20vi%20seu%20curriculo%20pelo%20site%2C%20e%20gostaria%20de%20saber%20mais"
+   class="whatsapp-float" target="_blank" rel="noopener">
+  <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+  </svg>
+  <div class="whatsapp-tooltip">Fale comigo no WhatsApp</div>
+</a>
+
+</body>
+</html>
