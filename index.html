@@ -3,697 +3,444 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Herschel Mateus — Comércio Exterior & Tech</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <title>Herschel Mateus | Comércio Exterior & Full Stack</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     :root {
-      --bg: #080c14;
-      --bg2: #0d1420;
-      --bg3: #111926;
-      --accent: #00c2ff;
-      --accent2: #0072ff;
-      --gold: #c9a84c;
-      --text: #e8edf5;
-      --muted: #6b7a99;
-      --border: rgba(255,255,255,0.06);
-      --card: rgba(255,255,255,0.03);
+      --cobalt: #1A4FD8; --cobalt-dark: #0F2F8A; --cobalt-light: #2D6AFF;
+      --mustard: #E8A020; --mustard-light: #F5BE4A; --gold: #C9962A;
+      --black: #0A0E1F; --dark: #0D1526; --dark2: #111B35; --white: #F5F8FF;
+      --gray: #8895B3; --border: rgba(26,79,216,0.25);
+      --shadow: 0 25px 50px -12px rgba(26,79,216,0.25);
+      --shadow-mustard: 0 25px 50px -12px rgba(232,160,32,0.3);
     }
-
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
+    body { font-family: 'Exo 2', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0;
+      background-image: radial-gradient(circle at 10% 20%, rgba(26,79,216,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(232,160,32,0.1) 0%, transparent 50%);
+      animation: bgFloat 20s ease-in-out infinite alternate;
     }
-
-    /* ── NAV ── */
+    @keyframes bgFloat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
+    .whatsapp-float {
+      position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px; z-index: 9999;
+      background: linear-gradient(135deg, #25D366, #128C7E); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 25px rgba(37,211,102,0.4); transition: all .3s; text-decoration: none;
+      animation: wobble 2s ease-in-out infinite;
+    }
+    .whatsapp-float:hover { transform: scale(1.15); box-shadow: 0 15px 35px rgba(37,211,102,0.6); }
+    .whatsapp-float i { font-size: 1.6rem; color: white; }
+    @keyframes wobble { 0%,100%{transform:translateY(0)} 25%{transform:translateY(-3px) rotate(2deg)} 75%{transform:translateY(-3px) rotate(-2deg)} }
     nav {
-      position: fixed; top:0; left:0; right:0; z-index:100;
-      display:flex; justify-content:space-between; align-items:center;
-      padding: 1.2rem 5vw;
-      background: rgba(8,12,20,0.85);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(10,14,31,0.95); backdrop-filter: blur(25px);
+      border-bottom: 1px solid var(--border); padding: 0 5%;
+      display: flex; align-items: center; justify-content: space-between; height: 72px;
     }
     .nav-logo {
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight:700; font-size:1.1rem; letter-spacing:.03em;
-      color: var(--text);
+      font-family: 'Orbitron', monospace; font-size: 1.25rem; font-weight: 900; letter-spacing: 2px;
+      background: linear-gradient(135deg, var(--cobalt-light), var(--mustard), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .nav-logo span { color: var(--accent); }
-    .nav-links { display:flex; gap:2rem; list-style:none; }
-    .nav-links a {
-      color: var(--muted); font-size:.85rem; font-weight:500;
-      text-decoration:none; letter-spacing:.06em; text-transform:uppercase;
-      transition: color .25s;
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--gray); text-decoration: none; font-weight: 500; letter-spacing: 1px; position: relative; transition: color .3s; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: var(--mustard); transition: width .3s; }
+    .nav-links a:hover { color: var(--mustard-light); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      background: linear-gradient(135deg, var(--mustard), var(--gold)); color: var(--black) !important;
+      padding: .5rem 1.5rem; border-radius: 50px; font-weight: 700 !important; transition: all .3s;
     }
-    .nav-links a:hover { color: var(--accent); }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      position: relative; overflow: hidden;
-      padding: 120px 5vw 80px;
-    }
-    .hero-bg {
-      position:absolute; inset:0;
-      background: radial-gradient(ellipse 70% 60% at 60% 40%, rgba(0,114,255,.12) 0%, transparent 70%),
-                  radial-gradient(ellipse 40% 40% at 15% 80%, rgba(201,168,76,.06) 0%, transparent 60%);
-    }
-    .grid-overlay {
-      position:absolute; inset:0; opacity:.18;
-      background-image:
-        linear-gradient(rgba(0,194,255,.15) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,194,255,.15) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
-    }
-    .hero-content {
-      position:relative; z-index:2;
-      max-width: 760px;
-    }
-    .hero-badge {
-      display: inline-flex; align-items:center; gap:.6rem;
-      background: rgba(201,168,76,.1);
-      border: 1px solid rgba(201,168,76,.25);
-      color: var(--gold);
-      padding: .4rem 1rem; border-radius:100px;
-      font-size:.75rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
-      margin-bottom: 1.6rem;
-    }
-    .badge-dot {
-      width:6px; height:6px; border-radius:50%;
-      background: var(--gold);
-      box-shadow: 0 0 6px var(--gold);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-
-    .hero h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.8rem, 6vw, 5rem);
-      font-weight: 800; line-height: 1.08;
-      letter-spacing: -.03em;
-      margin-bottom: 1.4rem;
-    }
-    .hero h1 .line-accent { color: var(--accent); }
-    .hero h1 .line-dim { color: var(--muted); font-weight:300; }
-
-    .hero-sub {
-      font-size:1.05rem; color: var(--muted); line-height:1.7;
-      max-width: 560px; margin-bottom: 2.4rem;
-    }
-    .hero-sub strong { color: var(--text); font-weight:500; }
-
-    .hero-cta { display:flex; gap:1rem; flex-wrap:wrap; }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent2), var(--accent));
-      color: #fff; padding: .8rem 2rem;
-      border-radius: 8px; font-weight:600; font-size:.9rem;
-      text-decoration:none; transition: transform .2s, box-shadow .2s;
-      box-shadow: 0 4px 24px rgba(0,194,255,.25);
-    }
-    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,194,255,.4); }
-    .btn-outline {
-      border: 1px solid var(--border);
-      background: var(--card); color: var(--text);
-      padding: .8rem 2rem; border-radius:8px;
-      font-weight:500; font-size:.9rem; text-decoration:none;
-      transition: border-color .2s, background .2s;
-    }
-    .btn-outline:hover { border-color: rgba(0,194,255,.4); background: rgba(0,194,255,.05); }
-
-    .hero-stats {
-      display: flex; gap:3rem; margin-top: 3.5rem;
-      padding-top: 2.5rem; border-top: 1px solid var(--border);
-    }
-    .stat-num {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size:2rem; font-weight:700; color: var(--text);
-      line-height:1;
-    }
-    .stat-num span { color: var(--accent); }
-    .stat-label { font-size:.75rem; color: var(--muted); margin-top:.3rem; text-transform:uppercase; letter-spacing:.06em; }
-
-    /* ── SECTIONS ── */
-    section { padding: 90px 5vw; }
-    .section-label {
-      font-size:.7rem; font-weight:700; letter-spacing:.15em;
-      text-transform:uppercase; color: var(--accent);
-      margin-bottom: .8rem;
-    }
-    .section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
-      font-weight:700; letter-spacing:-.02em;
-      margin-bottom: 1rem;
-    }
-    .section-desc {
-      color: var(--muted); font-size:.95rem; line-height:1.7;
-      max-width:580px; margin-bottom:3rem;
-    }
-
-    /* ── SKILLS ── */
-    .skills-section { background: var(--bg2); }
-    .skills-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem; }
-    .skill-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px; padding: 2rem;
-      transition: border-color .3s, transform .3s;
-    }
-    .skill-card:hover { border-color: rgba(0,194,255,.25); transform:translateY(-4px); }
-    .skill-card-icon {
-      width:44px; height:44px; border-radius:12px;
-      display:flex; align-items:center; justify-content:center;
-      margin-bottom:1.2rem; font-size:1.2rem;
-    }
-    .icon-blue  { background: rgba(0,114,255,.15); color: var(--accent); }
-    .icon-gold  { background: rgba(201,168,76,.15); color: var(--gold); }
-    .icon-green { background: rgba(0,220,130,.15); color: #00dc82; }
-    .skill-card h3 { font-size:.95rem; font-weight:600; margin-bottom:.8rem; }
-    .tags { display:flex; flex-wrap:wrap; gap:.4rem; }
-    .tag {
-      background: rgba(255,255,255,.05);
-      border: 1px solid var(--border);
-      color: var(--muted); font-size:.72rem;
-      padding:.25rem .65rem; border-radius:6px; font-weight:500;
-    }
-
-    /* ── EXPERIENCE ── */
-    .exp-section { background: var(--bg); }
-    .timeline { position:relative; }
-    .timeline::before {
-      content:''; position:absolute;
-      left:0; top:8px; bottom:8px; width:1px;
-      background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
-    }
-    .exp-item {
-      padding-left:2.5rem; position:relative;
-      margin-bottom:3rem;
-    }
-    .exp-dot {
-      position:absolute; left:-5px; top:6px;
-      width:11px; height:11px; border-radius:50%;
-      background: var(--accent);
-      box-shadow: 0 0 12px rgba(0,194,255,.6);
-    }
-    .exp-dot.gold { background: var(--gold); box-shadow: 0 0 12px rgba(201,168,76,.6); }
-    .exp-meta {
-      display:flex; align-items:center; gap:1rem;
-      margin-bottom:.5rem; flex-wrap:wrap;
-    }
-    .exp-company {
-      font-size:.75rem; font-weight:600; letter-spacing:.08em;
-      text-transform:uppercase; color: var(--accent);
-    }
-    .exp-company.gold { color: var(--gold); }
-    .exp-period {
-      font-size:.72rem; color: var(--muted);
-      background: var(--card); border:1px solid var(--border);
-      padding:.15rem .55rem; border-radius:4px;
-    }
-    .exp-role { font-size:1.05rem; font-weight:600; margin-bottom:.5rem; }
-    .exp-desc {
-      color: var(--muted); font-size:.88rem; line-height:1.65;
-    }
-    .exp-desc li { margin-bottom:.25rem; padding-left:.3rem; }
-    .exp-desc ul { padding-left:1rem; }
-
-    /* ── ABOUT ── */
-    .about-section {
-      background: var(--bg3);
-      display:grid; grid-template-columns: 1fr 1fr; gap:5rem; align-items:center;
-    }
-    .about-text .section-desc { max-width:100%; margin-bottom:1.5rem; }
-    .lang-list { display:flex; flex-direction:column; gap:.7rem; }
-    .lang-item { display:flex; align-items:center; gap:1rem; }
-    .lang-name { font-size:.85rem; font-weight:500; min-width:90px; }
-    .lang-bar {
-      flex:1; height:4px; background: var(--border);
-      border-radius:10px; overflow:hidden;
-    }
-    .lang-fill { height:100%; border-radius:10px; background: linear-gradient(90deg, var(--accent2), var(--accent)); }
-    .lang-level { font-size:.75rem; color: var(--muted); min-width:80px; text-align:right; }
-
-    .about-edu {}
-    .edu-card {
-      background: var(--card); border:1px solid var(--border);
-      border-radius:12px; padding:1.4rem 1.6rem;
-      margin-bottom:1rem;
-      display:flex; justify-content:space-between; align-items:flex-start;
-    }
-    .edu-name { font-size:.9rem; font-weight:600; margin-bottom:.25rem; }
-    .edu-inst { font-size:.78rem; color: var(--muted); }
-    .edu-year {
-      font-family:'Space Grotesk',sans-serif;
-      font-size:1rem; font-weight:700; color: var(--accent);
-    }
-
-    /* ── ACHIEVEMENTS ── */
-    .achievements-section { background: var(--bg2); }
-    .achievements-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:1.2rem; }
-    .achiev-card {
-      background: var(--card); border:1px solid var(--border);
-      border-radius:14px; padding:1.6rem;
-      transition: border-color .3s;
-    }
-    .achiev-card:hover { border-color: rgba(201,168,76,.3); }
-    .achiev-line {
-      width:32px; height:3px; border-radius:3px;
-      background: linear-gradient(90deg, var(--gold), var(--accent));
-      margin-bottom:1rem;
-    }
-    .achiev-card h3 { font-size:.9rem; font-weight:600; margin-bottom:.4rem; }
-    .achiev-card p { font-size:.82rem; color: var(--muted); line-height:1.6; }
-
-    /* ── CONTACT ── */
-    .contact-section {
-      background: var(--bg);
-      text-align:center;
-    }
-    .contact-section .section-desc { margin-left:auto; margin-right:auto; }
-    .contact-cards {
-      display:flex; justify-content:center; gap:1.5rem; flex-wrap:wrap;
-    }
-    .contact-card {
-      background: var(--card); border:1px solid var(--border);
-      border-radius:14px; padding:1.4rem 2rem;
-      text-decoration:none; color: var(--text);
-      display:flex; align-items:center; gap:1rem;
-      transition: border-color .3s, transform .3s;
-    }
-    .contact-card:hover { border-color: rgba(0,194,255,.3); transform:translateY(-3px); }
-    .contact-card-icon {
-      width:40px; height:40px; border-radius:10px;
-      background: rgba(0,114,255,.12);
-      display:flex; align-items:center; justify-content:center;
-      color: var(--accent); font-size:1rem; font-weight:700;
-    }
-    .contact-card-text strong { display:block; font-size:.85rem; font-weight:600; }
-    .contact-card-text span { font-size:.78rem; color: var(--muted); }
-
-    footer {
-      background: var(--bg2);
-      border-top: 1px solid var(--border);
-      padding:2rem 5vw;
-      display:flex; justify-content:space-between; align-items:center;
-      flex-wrap:wrap; gap:1rem;
-    }
-    footer p { font-size:.78rem; color: var(--muted); }
-    footer span { color: var(--accent); }
-
-    /* WHATSAPP FLOATING BUTTON */
-    .whatsapp-float {
-      position: fixed;
-      bottom: 2rem; right: 2rem;
-      width: 60px; height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 8px 24px rgba(37,211,102,0.4);
-      z-index: 9999;
-      transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-      text-decoration: none;
-    }
-    .whatsapp-float:hover {
-      transform: scale(1.1) translateY(-4px);
-      box-shadow: 0 12px 32px rgba(37,211,102,0.6);
-    }
-    .whatsapp-float:active { transform: scale(0.98); }
-    .whatsapp-icon {
-      width: 28px; height: 28px; color: white;
-      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
-    }
-    .whatsapp-tooltip {
-      position: absolute; bottom: 100%; right: 0;
-      background: var(--card); color: var(--text);
-      padding: .5rem 1rem; border-radius: 8px;
-      font-size: .75rem; font-weight: 500;
-      white-space: nowrap;
-      opacity: 0; visibility: hidden;
-      transition: all .2s;
-      border: 1px solid var(--border);
-      margin-bottom: .5rem;
-    }
-    .whatsapp-float:hover .whatsapp-tooltip {
-      opacity: 1; visibility: visible;
-    }
-
-    @media(max-width:768px) {
-      .about-section { grid-template-columns:1fr; gap:2.5rem; }
-      .hero-stats { gap:2rem; }
-      .nav-links { display:none; }
-      .whatsapp-float { bottom: 1.5rem; right: 1.5rem; width: 56px; height: 56px; }
-      .whatsapp-icon { width: 24px; height: 24px; }
+    .nav-cta:hover { transform: translateY(-2px); }
+    #hero { position: relative; z-index: 1; min-height: 100vh; display: flex; align-items: center; padding: 140px 5% 100px; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; max-width: 1400px; margin: 0 auto; }
+    .hero-orb { position: absolute; top: 15%; left: 10%; width: 300px; height: 300px; background: linear-gradient(135deg, rgba(26,79,216,0.25), rgba(232,160,32,0.15)); border-radius: 50%; filter: blur(50px); animation: orbFloat 6s ease-in-out infinite; }
+    @keyframes orbFloat { 0%,100%{transform:translateY(0) scale(1); opacity:.6} 50%{transform:translateY(-20px) scale(1.05); opacity:.8} }
+    .hero-content h1 { font-family: 'Orbitron', monospace; font-size: clamp(3rem,6vw,5rem); font-weight: 900; line-height: 1; letter-spacing: -2px; margin-bottom: 1rem; background: linear-gradient(135deg, var(--white) 0%, var(--cobalt-light) 50%, var(--mustard) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-subtitle { font-size: 1.1rem; color: var(--gray); line-height: 1.6; margin-bottom: 2.5rem; max-width: 450px; }
+    .hero-stats { display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .stat-card { text-align: center; padding: 1.5rem 1rem; background: rgba(26,79,216,0.2); border: 1px solid var(--cobalt); border-radius: 16px; transition: all .3s; backdrop-filter: blur(10px); }
+    .stat-card:hover { background: rgba(232,160,32,0.15); border-color: var(--mustard); transform: scale(1.08); }
+    .stat-num { font-family: 'Orbitron', monospace; font-size: 2.2rem; font-weight: 900; background: linear-gradient(135deg, var(--mustard), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
+    .stat-label { font-size: .75rem; color: var(--cobalt-light); letter-spacing: 1px; text-transform: uppercase; }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary { background: linear-gradient(135deg, var(--cobalt), var(--cobalt-light)); color: white; padding: .9rem 2rem; border-radius: 50px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: .5rem; box-shadow: var(--shadow); transition: all .3s; }
+    .btn-primary:hover { transform: translateY(-3px); }
+    .btn-secondary { background: transparent; color: var(--mustard); border: 2px solid var(--mustard); padding: .9rem 2rem; border-radius: 50px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: .5rem; transition: all .3s; }
+    .btn-secondary:hover { background: rgba(232,160,32,0.15); transform: translateY(-3px); }
+    .hero-visual { position: relative; display: flex; justify-content: center; }
+    .hero-avatar { width: 320px; height: 320px; background: linear-gradient(145deg, var(--cobalt-dark), var(--dark2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow), inset 0 0 40px rgba(0,0,0,0.6), 0 0 0 3px rgba(232,160,32,0.3), 0 0 0 8px rgba(26,79,216,0.2); animation: anchorPulse 2.5s ease-in-out infinite; overflow: hidden; }
+    .hero-avatar::before { content: '⚓'; font-size: 9rem; z-index: 2; filter: drop-shadow(0 0 20px rgba(232,160,32,0.8)); animation: anchorFloat 3s ease-in-out infinite; }
+    .hero-avatar::after { content: ''; position: absolute; top: 50%; left: 50%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(232,160,32,0.15) 0%, transparent 70%); transform: translate(-50%,-50%); border-radius: 50%; animation: ringExpand 2s ease-out infinite; }
+    @keyframes anchorPulse { 0%,100%{box-shadow:var(--shadow),inset 0 0 40px rgba(0,0,0,0.6),0 0 0 3px rgba(232,160,32,0.3),0 0 0 8px rgba(26,79,216,0.2)} 50%{box-shadow:0 35px 70px -15px rgba(26,79,216,0.4),inset 0 0 40px rgba(0,0,0,0.6),0 0 0 6px rgba(232,160,32,0.6),0 0 0 16px rgba(26,79,216,0.35);transform:scale(1.02)} }
+    @keyframes anchorFloat { 0%,100%{transform:translateY(0) rotate(0deg)} 33%{transform:translateY(-8px) rotate(2deg)} 66%{transform:translateY(-4px) rotate(-1deg)} }
+    @keyframes ringExpand { 0%{transform:translate(-50%,-50%) scale(0);opacity:1} 100%{transform:translate(-50%,-50%) scale(2.5);opacity:0} }
+    .hero-lines { position: absolute; top: -25px; right: -25px; width: 160px; height: 160px; border: 2px solid var(--mustard); border-radius: 50%; opacity: 0.4; animation: rotate 15s linear infinite; }
+    @keyframes rotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    .section-meta { display: flex; align-items: center; gap: 1rem; color: var(--cobalt-light); font-size: .8rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .section-meta::before { content: ''; width: 40px; height: 2px; background: linear-gradient(90deg, var(--cobalt), var(--mustard)); }
+    .section-title { font-family: 'Orbitron', monospace; font-size: clamp(2rem,4vw,3.2rem); font-weight: 900; margin-bottom: 4rem; line-height: 1.1; background: linear-gradient(135deg, var(--white), var(--mustard)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    #comercio { background: linear-gradient(135deg, rgba(26,79,216,0.12) 0%, var(--dark) 100%); padding: 120px 5%; position: relative; z-index: 1; }
+    .cx-masthead { text-align: center; margin-bottom: 5rem; }
+    .cx-badge { display: inline-flex; align-items: center; gap: .6rem; background: linear-gradient(135deg, var(--mustard), var(--gold)); color: var(--black); font-size: .85rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; padding: .5rem 1.5rem; border-radius: 50px; margin-bottom: 1.5rem; animation: badgeGlow 2s ease-in-out infinite alternate; }
+    @keyframes badgeGlow { 0%{box-shadow:var(--shadow-mustard)} 100%{box-shadow:0 10px 30px rgba(232,160,32,0.6)} }
+    .cx-masthead h2 { font-family: 'Orbitron', monospace; font-size: clamp(2.5rem,5vw,4rem); font-weight: 900; background: linear-gradient(135deg, var(--cobalt-light), var(--white)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .cx-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1400px; margin: 0 auto; }
+    .cx-card3d { background: linear-gradient(145deg, var(--dark2), var(--dark)); border: 1px solid var(--border); padding: 2.5rem 2rem; border-radius: 24px; position: relative; transition: all .4s cubic-bezier(0.175,.885,.32,1.275); overflow: hidden; }
+    .cx-card3d::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--cobalt), var(--mustard), var(--gold)); }
+    .cx-card3d:hover { transform: translateY(-15px); box-shadow: var(--shadow); border-color: var(--cobalt-light); }
+    .cx-icon { width: 56px; height: 56px; background: linear-gradient(135deg, var(--cobalt), var(--cobalt-light)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 1.5rem; }
+    .cx-card3d h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: .8rem; }
+    .cx-card3d p { color: var(--gray); line-height: 1.7; font-size: .92rem; }
+    #habilidades { padding: 120px 5%; position: relative; z-index: 1; background: var(--black); }
+    .skills-container { max-width: 1200px; margin: 0 auto; }
+    .skills-group { margin-bottom: 3rem; }
+    .skills-group-title { font-family: 'Orbitron', monospace; font-size: .9rem; font-weight: 700; color: var(--mustard); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: .8rem; }
+    .skills-group-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--mustard), transparent); }
+    .skills-pills { display: flex; flex-wrap: wrap; gap: .8rem; }
+    .skill-pill { background: linear-gradient(145deg, var(--dark2), var(--dark)); border: 1px solid var(--border); padding: .55rem 1.2rem; border-radius: 50px; font-size: .88rem; font-weight: 600; color: var(--white); transition: all .3s; display: inline-flex; align-items: center; gap: .5rem; }
+    .skill-pill:hover { border-color: var(--cobalt-light); background: rgba(26,79,216,0.2); transform: translateY(-2px); }
+    .skill-pill.gold:hover { border-color: var(--mustard); background: rgba(232,160,32,0.15); }
+    .skill-pill i { color: var(--cobalt-light); font-size: .75rem; }
+    .skill-pill.gold i { color: var(--mustard); }
+    .lang-grid { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem; }
+    .lang-card { background: linear-gradient(145deg, var(--dark2), var(--dark)); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem 2rem; min-width: 160px; text-align: center; transition: all .3s; }
+    .lang-card:hover { border-color: var(--mustard); transform: translateY(-5px); }
+    .lang-flag { font-size: 2.5rem; margin-bottom: .5rem; }
+    .lang-name { font-family: 'Orbitron', monospace; font-size: .85rem; font-weight: 700; }
+    .lang-level { font-size: .8rem; color: var(--mustard); margin-top: .3rem; font-weight: 600; }
+    #experiencia { padding: 120px 5%; position: relative; z-index: 1; background: linear-gradient(180deg, var(--dark), var(--black)); }
+    .timeline { max-width: 900px; margin: 0 auto; position: relative; }
+    .timeline::before { content: ''; position: absolute; left: 28px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--cobalt), var(--mustard), var(--cobalt)); }
+    .timeline-item { display: flex; gap: 2rem; margin-bottom: 3.5rem; align-items: flex-start; }
+    .timeline-dot { width: 58px; height: 58px; flex-shrink: 0; background: linear-gradient(135deg, var(--cobalt), var(--cobalt-light)); border: 3px solid var(--dark); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; z-index: 1; box-shadow: 0 0 0 4px rgba(26,79,216,0.2); transition: all .3s; }
+    .timeline-item:hover .timeline-dot { background: linear-gradient(135deg, var(--mustard), var(--gold)); }
+    .timeline-dot.current { background: linear-gradient(135deg, var(--mustard), var(--gold)); animation: dotPulse 2s ease-in-out infinite; }
+    @keyframes dotPulse { 0%,100%{box-shadow:0 0 0 4px rgba(232,160,32,0.3)} 50%{box-shadow:0 0 0 10px rgba(232,160,32,0.1)} }
+    .timeline-card { flex: 1; background: linear-gradient(145deg, var(--dark2), var(--dark)); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; transition: all .3s; }
+    .timeline-card:hover { border-color: var(--cobalt-light); box-shadow: var(--shadow); transform: translateX(5px); }
+    .timeline-card.highlight { border-color: rgba(232,160,32,0.4); }
+    .timeline-card.highlight:hover { border-color: var(--mustard); box-shadow: var(--shadow-mustard); }
+    .tl-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: .5rem; }
+    .tl-role { font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: .25rem; }
+    .tl-company { font-size: .9rem; font-weight: 600; color: var(--cobalt-light); }
+    .tl-date { background: rgba(26,79,216,0.2); border: 1px solid var(--cobalt); padding: .3rem .8rem; border-radius: 50px; font-size: .75rem; font-weight: 700; color: var(--cobalt-light); white-space: nowrap; }
+    .tl-date.current-badge { background: rgba(232,160,32,0.2); border-color: var(--mustard); color: var(--mustard); }
+    .tl-bullets { list-style: none; margin-top: 1rem; }
+    .tl-bullets li { color: var(--gray); font-size: .9rem; line-height: 1.7; padding-left: 1.2rem; position: relative; margin-bottom: .3rem; }
+    .tl-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--cobalt-light); }
+    #projetos { padding: 120px 5%; position: relative; z-index: 1; background: linear-gradient(135deg, rgba(232,160,32,0.04), var(--black)); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+    .project-card { background: linear-gradient(145deg, var(--dark2), var(--dark)); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem 2rem; position: relative; transition: all .4s; overflow: hidden; }
+    .project-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--mustard), var(--cobalt)); }
+    .project-card:hover { transform: translateY(-10px); border-color: var(--mustard); box-shadow: var(--shadow-mustard); }
+    .project-icon { font-size: 2.5rem; margin-bottom: 1.2rem; filter: drop-shadow(0 0 10px rgba(232,160,32,0.5)); }
+    .project-card h3 { font-family: 'Orbitron', monospace; font-size: .95rem; font-weight: 700; margin-bottom: .8rem; color: var(--mustard); }
+    .project-card p { color: var(--gray); line-height: 1.7; font-size: .92rem; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.2rem; }
+    .project-tag { background: rgba(26,79,216,0.2); border: 1px solid var(--cobalt); padding: .2rem .7rem; border-radius: 50px; font-size: .75rem; color: var(--cobalt-light); font-weight: 600; }
+    #formacao { padding: 120px 5%; position: relative; z-index: 1; background: var(--dark); }
+    .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto; }
+    .edu-card { background: linear-gradient(145deg, var(--dark2), var(--dark)); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem 2rem; text-align: center; transition: all .3s; position: relative; overflow: hidden; }
+    .edu-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--cobalt), var(--mustard)); }
+    .edu-card:hover { transform: translateY(-8px); border-color: var(--cobalt-light); box-shadow: var(--shadow); }
+    .edu-year { font-family: 'Orbitron', monospace; font-size: 2.2rem; font-weight: 900; background: linear-gradient(135deg, var(--mustard), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: .5rem; }
+    .edu-course { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: .5rem; }
+    .edu-institution { font-size: .88rem; color: var(--cobalt-light); font-weight: 600; }
+    #cta { text-align: center; padding: 140px 5%; position: relative; z-index: 1; background: linear-gradient(135deg, rgba(26,79,216,0.1), var(--black)); }
+    #cta h2 { font-family: 'Orbitron'; font-size: clamp(2rem,5vw,3.5rem); font-weight: 900; background: linear-gradient(135deg, var(--mustard), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; }
+    .cta-buttons { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+    .cta-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); color: white; padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: .7rem; box-shadow: 0 10px 30px rgba(37,211,102,0.4); transition: all .3s; font-size: 1rem; }
+    .cta-whatsapp:hover { transform: translateY(-3px); }
+    .cta-linkedin { background: linear-gradient(135deg, #0077B5, #0A66C2); color: white; padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: .7rem; transition: all .3s; font-size: 1rem; }
+    .cta-linkedin:hover { transform: translateY(-3px); }
+    .contact-info { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-top: 3rem; }
+    .contact-item { display: flex; align-items: center; gap: .6rem; color: var(--gray); font-size: .95rem; }
+    .contact-item i { color: var(--cobalt-light); }
+    footer { text-align: center; padding: 2.5rem 5%; border-top: 1px solid var(--border); color: var(--gray); font-size: .85rem; position: relative; z-index: 1; }
+    @media (max-width: 768px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+      .hero-stats, .hero-ctas { justify-content: center; }
+      .hero-avatar { width: 240px; height: 240px; }
+      .hero-avatar::before { font-size: 7rem; }
+      .nav-links { display: none; }
+      .timeline::before { left: 20px; }
+      .timeline-dot { width: 42px; height: 42px; font-size: .9rem; }
     }
   </style>
 </head>
 <body>
+  <a href="https://wa.link/gnfnzz" target="_blank" class="whatsapp-float" title="Falar no WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">HM<span>.</span>goes</div>
-  <ul class="nav-links">
-    <li><a href="#sobre">Sobre</a></li>
-    <li><a href="#habilidades">Habilidades</a></li>
-    <li><a href="#experiencia">Experiência</a></li>
-    <li><a href="#formacao">Formação</a></li>
-    <li><a href="#contato">Contato</a></li>
-  </ul>
-</nav>
+  <nav>
+    <div class="nav-logo">HM<span style="color:var(--mustard)">&#9875;</span>GOES</div>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#comercio">Trade</a></li>
+      <li><a href="#habilidades">Skills</a></li>
+      <li><a href="#experiencia">Experiência</a></li>
+      <li><a href="#projetos">Projetos</a></li>
+      <li><a href="#formacao">Formação</a></li>
+      <li><a href="#cta" class="nav-cta">Contato</a></li>
+    </ul>
+  </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="grid-overlay"></div>
-  <div class="hero-content">
-    <div class="hero-badge">
-      <div class="badge-dot"></div>
-      Disponível para oportunidades
+  <section id="hero">
+    <div class="hero-orb"></div>
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="section-meta"><i class="fas fa-map-marker-alt"></i>&nbsp;Itajaí, SC — Brasil</div>
+        <h1>Herschel<br/><span>Mateus</span></h1>
+        <p class="hero-subtitle">
+          <strong>Comércio Exterior | Full Stack | Dados &amp; Automação</strong><br/>
+          Do porto ao código — expertise em trade internacional com visão tecnológica completa.
+        </p>
+        <div class="hero-stats">
+          <div class="stat-card"><span class="stat-num">7+</span><span class="stat-label">Anos no Trade</span></div>
+          <div class="stat-card"><span class="stat-num">360°</span><span class="stat-label">Visão Logística</span></div>
+          <div class="stat-card"><span class="stat-num">3x</span><span class="stat-label">Idiomas</span></div>
+        </div>
+        <div class="hero-ctas">
+          <a href="#experiencia" class="btn-primary"><i class="fas fa-briefcase"></i>&nbsp;Ver Experiência</a>
+          <a href="mailto:herschel.mateus@outlook.com.br" class="btn-secondary"><i class="fas fa-envelope"></i>&nbsp;E-mail</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-lines"></div>
+        <div class="hero-avatar"></div>
+      </div>
     </div>
-    <h1>
-      Herschel Mateus<br/>
-      <span class="line-accent">Comércio Exterior</span><br/>
-      <span class="line-dim">& Full Stack</span>
-    </h1>
-    <p class="hero-sub">
-      Profissional bilíngue com <strong>sólida trajetória em importação e exportação</strong>,
-      combinada à capacidade técnica de desenvolver sistemas e dashboards que transformam
-      operações aduaneiras em <strong>vantagem competitiva</strong>.
+  </section>
+
+  <section id="comercio">
+    <div class="section-meta" style="justify-content:center;padding:0 5%;"><i class="fas fa-anchor"></i>&nbsp;Core Expertise</div>
+    <div class="cx-masthead">
+      <div class="cx-badge"><i class="fas fa-globe-americas"></i>&nbsp;Especialista em Comércio Exterior</div>
+      <h2>Trade<br/>Internacional</h2>
+    </div>
+    <div class="cx-grid">
+      <div class="cx-card3d"><div class="cx-icon"><i class="fas fa-ship"></i></div><h3>Importação</h3><p>Registro e acompanhamento de DI, LI, LPCO e CE Mercante no Siscomex. Gestão de cartas de protesto e documentação IMO.</p></div>
+      <div class="cx-card3d"><div class="cx-icon"><i class="fas fa-plane-departure"></i></div><h3>Exportação</h3><p>Emissão de B/L, faturas comerciais e conhecimentos de embarque. Fechamento de câmbio e contato com agentes internacionais.</p></div>
+      <div class="cx-card3d"><div class="cx-icon"><i class="fas fa-coins"></i></div><h3>Câmbio &amp; Docs</h3><p>Fechamento de câmbio e documentação alfandegária completa para múltiplas modalidades de transporte e cargas especiais.</p></div>
+      <div class="cx-card3d"><div class="cx-icon"><i class="fas fa-warehouse"></i></div><h3>Operação Portuária</h3><p>Raízes práticas na movimentação de contêineres e logística portuária. Curadoria de armazém e controle de estoque.</p></div>
+      <div class="cx-card3d"><div class="cx-icon"><i class="fas fa-chart-bar"></i></div><h3>Dados &amp; BI</h3><p>Dashboards estratégicos em Power BI e SQL para visibilidade em tempo real de operações logísticas e de comércio exterior.</p></div>
+      <div class="cx-card3d"><div class="cx-icon"><i class="fas fa-robot"></i></div><h3>Automação</h3><p>Integração de APIs de rastreamento, cron jobs para coleta automática e pipelines de automação operacional com Python/Flask.</p></div>
+    </div>
+  </section>
+
+  <section id="habilidades">
+    <div class="skills-container">
+      <div class="section-meta"><i class="fas fa-microchip"></i>&nbsp;Competências</div>
+      <h2 class="section-title">Stack &amp;<br/>Habilidades</h2>
+      <div class="skills-group">
+        <div class="skills-group-title"><i class="fas fa-globe"></i>&nbsp;Comércio Exterior</div>
+        <div class="skills-pills">
+          <span class="skill-pill gold"><i class="fas fa-circle"></i>Importação</span>
+          <span class="skill-pill gold"><i class="fas fa-circle"></i>Exportação</span>
+          <span class="skill-pill gold"><i class="fas fa-circle"></i>Desembaraço Aduaneiro</span>
+          <span class="skill-pill gold"><i class="fas fa-circle"></i>LPCO</span>
+          <span class="skill-pill gold"><i class="fas fa-circle"></i>LI</span>
+          <span class="skill-pill gold"><i class="fas fa-circle"></i>DI</span>
+          <span class="skill-pill gold"><i class="fas fa-circle"></i>CE Mercante</span>
+          <span class="skill-pill gold"><i class="fas fa-circle"></i>Fechamento de Câmbio</span>
+          <span class="skill-pill gold"><i class="fas fa-circle"></i>Fatura Comercial</span>
+          <span class="skill-pill gold"><i class="fas fa-circle"></i>B/L</span>
+          <span class="skill-pill gold"><i class="fas fa-circle"></i>Agentes de Carga</span>
+          <span class="skill-pill gold"><i class="fas fa-circle"></i>Siscomex</span>
+        </div>
+      </div>
+      <div class="skills-group">
+        <div class="skills-group-title"><i class="fas fa-database"></i>&nbsp;Análise de Dados &amp; BI</div>
+        <div class="skills-pills">
+          <span class="skill-pill"><i class="fas fa-circle"></i>Power BI</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>SQL Server</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>PostgreSQL</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>Modelagem de Dados</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>ETL</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>Excel Avançado</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>Dashboards</span>
+        </div>
+      </div>
+      <div class="skills-group">
+        <div class="skills-group-title"><i class="fas fa-code"></i>&nbsp;Dev &amp; Infraestrutura</div>
+        <div class="skills-pills">
+          <span class="skill-pill"><i class="fas fa-circle"></i>Python / Flask</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>JavaScript</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>HTML / CSS</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>APIs REST</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>Linux (Ubuntu)</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>Nginx / Gunicorn</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>Git</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>Oracle Cloud</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>SSL / Let's Encrypt</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>Leaflet.js</span>
+          <span class="skill-pill"><i class="fas fa-circle"></i>Chart.js</span>
+        </div>
+      </div>
+      <div class="skills-group">
+        <div class="skills-group-title"><i class="fas fa-language"></i>&nbsp;Idiomas</div>
+        <div class="lang-grid">
+          <div class="lang-card"><div class="lang-flag">&#127463;&#127479;</div><div class="lang-name">Português</div><div class="lang-level">Nativo</div></div>
+          <div class="lang-card"><div class="lang-flag">&#127482;&#127480;</div><div class="lang-name">Inglês</div><div class="lang-level">Intermediário</div></div>
+          <div class="lang-card"><div class="lang-flag">&#127466;&#127480;</div><div class="lang-name">Espanhol</div><div class="lang-level">Intermediário</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experiencia">
+    <div class="section-meta"><i class="fas fa-briefcase"></i>&nbsp;Trajetória</div>
+    <h2 class="section-title">Experiência<br/>Profissional</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot current"><i class="fas fa-code"></i></div>
+        <div class="timeline-card highlight">
+          <div class="tl-header"><div><div class="tl-role">Desenvolvedor Full Stack &amp; Analista Logístico (PJ)</div><div class="tl-company">Marilog</div></div><div class="tl-date current-badge">ago/2025 — atual &#10022;</div></div>
+          <ul class="tl-bullets">
+            <li>Liderança do desenvolvimento de sistema de rastreamento veicular e CRM, do servidor à interface.</li>
+            <li>Infraestrutura Oracle Cloud (Ubuntu): SSH, firewall e SSL com Let's Encrypt.</li>
+            <li>Back-end Python/Flask + PostgreSQL; front-end Leaflet e Chart.js para rastreamento em tempo real.</li>
+            <li>Integração de APIs Buonny e NOX GR via cron jobs para coleta automática de dados.</li>
+            <li>Pipeline de leads via chatbot e módulos de CRM, vagas e candidatos.</li>
+            <li>Programação de carga, emissão de CT-e e controle documental de frota.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"><i class="fas fa-laptop-code"></i></div>
+        <div class="timeline-card">
+          <div class="tl-header"><div><div class="tl-role">Desenvolvedor de Sites (Freelancer)</div><div class="tl-company">Autônomo</div></div><div class="tl-date">ago/2025 — dez/2025</div></div>
+          <ul class="tl-bullets">
+            <li>Sites institucionais e landing pages com HTML, CSS, JavaScript e integração de APIs.</li>
+            <li>Configuração de hospedagem, domínios e certificados SSL; manutenção contínua para clientes.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"><i class="fas fa-ship"></i></div>
+        <div class="timeline-card">
+          <div class="tl-header"><div><div class="tl-role">Analista de Importação Jr.</div><div class="tl-company">Nelson Heusi Logística e Armazéns Gerais LTDA</div></div><div class="tl-date">jan/2025 — ago/2025</div></div>
+          <ul class="tl-bullets">
+            <li>Gestão de processos de importação: LI, DI, LPCO, CE Mercante no Siscomex.</li>
+            <li>Cartas de protesto e documentação completa de cargas IMO.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"><i class="fas fa-chart-line"></i></div>
+        <div class="timeline-card">
+          <div class="tl-header"><div><div class="tl-role">Consultor Logístico</div><div class="tl-company">JET</div></div><div class="tl-date">jul/2024 — dez/2024</div></div>
+          <ul class="tl-bullets">
+            <li>Métodos logísticos de alta performance para otimização de processos operacionais.</li>
+            <li>Banco de dados e dashboards em tempo real com Power BI e SQL para visibilidade estratégica.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"><i class="fas fa-plane"></i></div>
+        <div class="timeline-card">
+          <div class="tl-header"><div><div class="tl-role">Analista de Exportação Jr.</div><div class="tl-company">EasyLog – Serviços e Logística LTDA</div></div><div class="tl-date">jan/2024 — mar/2024</div></div>
+          <ul class="tl-bullets">
+            <li>Processos de exportação: da carga à emissão de B/L e faturas comerciais.</li>
+            <li>Fechamento de câmbio e contato com agentes de carga internacionais.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"><i class="fas fa-boxes"></i></div>
+        <div class="timeline-card">
+          <div class="tl-header"><div><div class="tl-role">Operador Logístico</div><div class="tl-company">ScanSource Brasil Distribuidora de Tecnologias LTDA</div></div><div class="tl-date">fev/2021 — jan/2024</div></div>
+          <ul class="tl-bullets">
+            <li>Curadoria de armazém e coordenação da equipe de faturamento, garantindo acuracidade do estoque.</li>
+            <li>Excel avançado: painéis e relatórios automatizados para controle operacional.</li>
+            <li>Promovido de Assistente Logístico (fev/2021) a Operador Logístico (ago/2022).</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"><i class="fas fa-anchor"></i></div>
+        <div class="timeline-card">
+          <div class="tl-header"><div><div class="tl-role">Lavador de Contêineres</div><div class="tl-company">E. M. M. Serviços LTDA</div></div><div class="tl-date">mar/2020 — fev/2021</div></div>
+          <ul class="tl-bullets"><li>Limpeza e preparação de contêineres. Primeiros passos na experiência portuária.</li></ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"><i class="fas fa-star"></i></div>
+        <div class="timeline-card">
+          <div class="tl-header"><div><div class="tl-role">Aprendiz Administrativo</div><div class="tl-company">Azimut do Brasil Fabricação de Iates LTDA</div></div><div class="tl-date">fev/2019 — dez/2019</div></div>
+          <ul class="tl-bullets"><li>Jovem Aprendiz: início de carreira desenvolvendo habilidades administrativas e vivência corporativa.</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projetos">
+    <div class="section-meta"><i class="fas fa-rocket"></i>&nbsp;Realizações</div>
+    <h2 class="section-title">Projetos &amp;<br/>Conquistas</h2>
+    <div class="projects-grid">
+      <div class="project-card"><div class="project-icon">&#128666;</div><h3>Sistema Marilog</h3><p>Liderança do desenvolvimento de rastreamento veicular e CRM do zero — logística, full stack e cloud em uma plataforma única.</p><div class="project-tags"><span class="project-tag">Python/Flask</span><span class="project-tag">PostgreSQL</span><span class="project-tag">Oracle Cloud</span><span class="project-tag">Leaflet.js</span></div></div>
+      <div class="project-card"><div class="project-icon">&#127891;</div><h3>SCTech / SENAI-SC</h3><p>Qualificação em desenvolvimento de sistemas e inteligência artificial pelo programa do Governo de SC — formação técnica de ponta.</p><div class="project-tags"><span class="project-tag">Dev Sistemas</span><span class="project-tag">IA</span><span class="project-tag">Governo SC</span></div></div>
+      <div class="project-card"><div class="project-icon">&#128202;</div><h3>BI &amp; Automação</h3><p>Dashboards interativos em Power BI e Excel para controle de armazém e faturamento na ScanSource, automatizando relatórios críticos.</p><div class="project-tags"><span class="project-tag">Power BI</span><span class="project-tag">SQL</span><span class="project-tag">Excel Avançado</span></div></div>
+      <div class="project-card"><div class="project-icon">&#128260;</div><h3>Migração Estratégica</h3><p>Transição bem-sucedida de Comércio Exterior para Dev Full Stack e Análise de Dados, combinando expertise das duas áreas.</p><div class="project-tags"><span class="project-tag">Full Stack</span><span class="project-tag">Comex</span><span class="project-tag">Dados</span></div></div>
+      <div class="project-card"><div class="project-icon">&#127758;</div><h3>Visão Ponta a Ponta</h3><p>Experiência completa no ciclo do comércio exterior: importação (Nelson Heusi), exportação (EasyLog) e operação portuária (E.M.M.).</p><div class="project-tags"><span class="project-tag">Importação</span><span class="project-tag">Exportação</span><span class="project-tag">Porto</span></div></div>
+      <div class="project-card"><div class="project-icon">&#129302;</div><h3>Pipeline de Leads</h3><p>Chatbot para pipeline de leads e módulos de CRM com gestão de vagas e candidatos, otimizando processos de negócio na Marilog.</p><div class="project-tags"><span class="project-tag">CRM</span><span class="project-tag">Chatbot</span><span class="project-tag">Automação</span></div></div>
+    </div>
+  </section>
+
+  <section id="formacao">
+    <div class="section-meta"><i class="fas fa-graduation-cap"></i>&nbsp;Educação</div>
+    <h2 class="section-title">Formação &amp;<br/>Qualificações</h2>
+    <div class="edu-grid">
+      <div class="edu-card"><div class="edu-year">2026</div><div class="edu-course">Desenvolvimento de Sistemas</div><div class="edu-institution">SCTech – Governo de SC / SENAI-SC</div></div>
+      <div class="edu-card"><div class="edu-year">2025</div><div class="edu-course">Técnico em Análise de Dados</div><div class="edu-institution">Alura</div></div>
+      <div class="edu-card"><div class="edu-year">2022</div><div class="edu-course">Tecnólogo em Comércio Exterior</div><div class="edu-institution">Uniasselvi, Itajaí</div></div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <div class="section-meta" style="justify-content:center;"><i class="fas fa-satellite-dish"></i>&nbsp;Conexão</div>
+    <h2>Pronto para<br/>navegar novas rotas?</h2>
+    <p style="color:var(--gray); font-size:1.1rem; max-width:520px; margin:1rem auto 0; line-height:1.7;">
+      Profissional bilíngue com visão 360° unindo Comércio Exterior, Full Stack e Dados. Vamos conversar sobre como posso agregar valor ao seu negócio.
     </p>
-    <div class="hero-cta">
-      <a href="#experiencia" class="btn-primary">Ver Experiência</a>
-      <a href="#contato" class="btn-outline">Entrar em contato</a>
+    <div class="cta-buttons">
+      <a href="https://wa.link/gnfnzz" target="_blank" class="cta-whatsapp"><i class="fab fa-whatsapp"></i>&nbsp;Falar no WhatsApp</a>
+      <a href="https://linkedin.com/in/herschel-mateus-a8a178305" target="_blank" class="cta-linkedin"><i class="fab fa-linkedin"></i>&nbsp;LinkedIn</a>
     </div>
-    <div class="hero-stats">
-      <div class="stat-item">
-        <div class="stat-num">7<span>+</span></div>
-        <div class="stat-label">Anos de carreira</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">3<span></span></div>
-        <div class="stat-label">Idiomas</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">360<span>°</span></div>
-        <div class="stat-label">Visão operacional</div>
-      </div>
+    <div class="contact-info">
+      <div class="contact-item"><i class="fas fa-envelope"></i>&nbsp;herschel.mateus@outlook.com.br</div>
+      <div class="contact-item"><i class="fas fa-phone"></i>&nbsp;(47) 99284-2056</div>
+      <div class="contact-item"><i class="fas fa-map-marker-alt"></i>&nbsp;Itajaí, SC — Brasil</div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- HABILIDADES -->
-<section class="skills-section" id="habilidades">
-  <div class="section-label">Competências</div>
-  <h2 class="section-title">Habilidades Técnicas</h2>
-  <p class="section-desc">Domínio nas três frentes que definem o comércio exterior moderno: operação aduaneira, inteligência de dados e desenvolvimento de sistemas.</p>
-  <div class="skills-grid">
-    <div class="skill-card">
-      <div class="skill-card-icon icon-gold">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      </div>
-      <h3>Comércio Exterior</h3>
-      <div class="tags">
-        <span class="tag">Importação</span><span class="tag">Exportação</span>
-        <span class="tag">Desembaraço Aduaneiro</span><span class="tag">LPCO</span>
-        <span class="tag">LI / DI</span><span class="tag">CE Mercante</span>
-        <span class="tag">Fechamento de Câmbio</span><span class="tag">B/L</span>
-        <span class="tag">Agentes de Carga</span><span class="tag">Siscomex</span>
-        <span class="tag">Carga IMO</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-card-icon icon-blue">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-      </div>
-      <h3>Análise de Dados & BI</h3>
-      <div class="tags">
-        <span class="tag">Power BI</span><span class="tag">SQL Server</span>
-        <span class="tag">PostgreSQL</span><span class="tag">Modelagem de Dados</span>
-        <span class="tag">ETL</span><span class="tag">Excel Avançado</span>
-        <span class="tag">Dashboards</span><span class="tag">Painéis em Tempo Real</span>
-      </div>
-    </div>
-    <div class="skill-card">
-      <div class="skill-card-icon icon-green">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-      </div>
-      <h3>Dev & Infraestrutura</h3>
-      <div class="tags">
-        <span class="tag">Python / Flask</span><span class="tag">JavaScript</span>
-        <span class="tag">HTML / CSS</span><span class="tag">APIs REST</span>
-        <span class="tag">Linux Ubuntu</span><span class="tag">Nginx</span>
-        <span class="tag">Oracle Cloud</span><span class="tag">Git</span>
-        <span class="tag">Gunicorn</span>
-      </div>
-    </div>
-  </div>
-</section>
+  <footer>
+    <p>&#169; 2026 Herschel Mateus de Goes &middot; Comércio Exterior | Full Stack | Dados &amp; Automação</p>
+    <p style="margin-top:.5rem; color:var(--cobalt-light); font-size:.8rem;">Feito com <span style="color:var(--mustard)">&#9875;</span> em Itajaí, SC</p>
+  </footer>
 
-<!-- EXPERIÊNCIA -->
-<section class="exp-section" id="experiencia">
-  <div class="section-label">Trajetória</div>
-  <h2 class="section-title">Experiência Profissional</h2>
-  <p class="section-desc">Uma trajetória que começa no porto e chega à nuvem — cada passo construindo uma visão única entre operação e tecnologia.</p>
-
-  <div class="timeline">
-
-    <div class="exp-item">
-      <div class="exp-dot"></div>
-      <div class="exp-meta">
-        <span class="exp-company">Marilog</span>
-        <span class="exp-period">ago/2025 — atual</span>
-      </div>
-      <div class="exp-role">Desenvolvedor Full Stack & Analista Logístico</div>
-      <div class="exp-desc">
-        <ul>
-          <li>Liderança no desenvolvimento de sistema completo de rastreamento veicular e CRM — do servidor à interface.</li>
-          <li>Infraestrutura Oracle Cloud (Ubuntu): SSH, firewall, SSL com Let's Encrypt.</li>
-          <li>Back-end Python/Flask + PostgreSQL; front-end com Leaflet e Chart.js em tempo real.</li>
-          <li>Integração de APIs de rastreamento (Buonny, NOX GR) via cron jobs.</li>
-          <li>Programação de carga, emissão de CT-e e gestão de frota.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="exp-item">
-      <div class="exp-dot gold"></div>
-      <div class="exp-meta">
-        <span class="exp-company gold">Nelson Heusi Logística</span>
-        <span class="exp-period">jan/2025 — ago/2025</span>
-      </div>
-      <div class="exp-role">Analista de Importação Jr.</div>
-      <div class="exp-desc">
-        <ul>
-          <li>Registro e acompanhamento de operações de importação no Siscomex.</li>
-          <li>Gestão de LI, DI, LPCO, CE Mercante, cartas de protesto e documentação IMO.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="exp-item">
-      <div class="exp-dot"></div>
-      <div class="exp-meta">
-        <span class="exp-company">JET</span>
-        <span class="exp-period">jul/2024 — dez/2024</span>
-      </div>
-      <div class="exp-role">Consultor Logístico</div>
-      <div class="exp-desc">
-        <ul>
-          <li>Criação de métodos logísticos de alta performance para otimização de processos.</li>
-          <li>Desenvolvimento de banco de dados e dashboards em tempo real com Power BI e SQL.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="exp-item">
-      <div class="exp-dot gold"></div>
-      <div class="exp-meta">
-        <span class="exp-company gold">EasyLog</span>
-        <span class="exp-period">jan/2024 — mar/2024</span>
-      </div>
-      <div class="exp-role">Analista de Exportação Jr.</div>
-      <div class="exp-desc">
-        <ul>
-          <li>Acompanhamento completo de exportações: da carga à emissão de B/L e faturas comerciais.</li>
-          <li>Suporte no fechamento de câmbio e contato com agentes de carga internacionais.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="exp-item">
-      <div class="exp-dot"></div>
-      <div class="exp-meta">
-        <span class="exp-company">ScanSource Brasil</span>
-        <span class="exp-period">fev/2021 — jan/2024</span>
-      </div>
-      <div class="exp-role">Operador Logístico</div>
-      <div class="exp-desc">
-        <ul>
-          <li>Coordenação de equipe de faturamento e gestão de armazém com acuracidade de estoque.</li>
-          <li>Automação de relatórios operacionais via Excel avançado. Promovido em ago/2022.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="exp-item">
-      <div class="exp-dot gold"></div>
-      <div class="exp-meta">
-        <span class="exp-company gold">E. M. M. Serviços</span>
-        <span class="exp-period">mar/2020 — fev/2021</span>
-      </div>
-      <div class="exp-role">Lavador de Contêineres</div>
-      <div class="exp-desc">Experiência portuária inicial — responsável pela limpeza e preparação de contêineres para novos carregamentos.</div>
-    </div>
-
-  </div>
-</section>
-
-<!-- SOBRE / FORMAÇÃO -->
-<section class="about-section" id="formacao">
-  <div class="about-text">
-    <div class="section-label">Perfil</div>
-    <h2 class="section-title">Sobre mim</h2>
-    <p class="section-desc">
-      Profissional com visão ponta a ponta do comércio exterior — da operação portuária ao desembaraço aduaneiro — complementada por habilidade técnica para automatizar processos e construir sistemas de inteligência logística. Qualificado pelo programa SCTech (Governo de SC / SENAI-SC) e em constante evolução na interseção entre trade e tecnologia.
-    </p>
-    <div class="section-label" style="margin-top:1.5rem;">Idiomas</div>
-    <div class="lang-list" style="margin-top:.8rem;">
-      <div class="lang-item">
-        <span class="lang-name">Português</span>
-        <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
-        <span class="lang-level">Nativo</span>
-      </div>
-      <div class="lang-item">
-        <span class="lang-name">Inglês</span>
-        <div class="lang-bar"><div class="lang-fill" style="width:60%"></div></div>
-        <span class="lang-level">Intermediário</span>
-      </div>
-      <div class="lang-item">
-        <span class="lang-name">Espanhol</span>
-        <div class="lang-bar"><div class="lang-fill" style="width:55%"></div></div>
-        <span class="lang-level">Intermediário</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="about-edu" id="sobre">
-    <div class="section-label">Formação</div>
-    <h2 class="section-title" style="margin-bottom:1.5rem;">Educação</h2>
-    <div class="edu-card">
-      <div>
-        <div class="edu-name">Desenvolvimento de Sistemas</div>
-        <div class="edu-inst">SCTech — Governo de SC / SENAI-SC</div>
-      </div>
-      <div class="edu-year">2026</div>
-    </div>
-    <div class="edu-card">
-      <div>
-        <div class="edu-name">Técnico em Análise de Dados</div>
-        <div class="edu-inst">Alura</div>
-      </div>
-      <div class="edu-year">2025</div>
-    </div>
-    <div class="edu-card">
-      <div>
-        <div class="edu-name">Tecnólogo em Comércio Exterior</div>
-        <div class="edu-inst">Uniasselvi, Itajaí — SC</div>
-      </div>
-      <div class="edu-year">2022</div>
-    </div>
-  </div>
-</section>
-
-<!-- REALIZAÇÕES -->
-<section class="achievements-section">
-  <div class="section-label">Destaques</div>
-  <h2 class="section-title">Principais Realizações</h2>
-  <p class="section-desc">Projetos e marcos que demonstram a capacidade de unir operação, dados e tecnologia.</p>
-  <div class="achievements-grid">
-    <div class="achiev-card">
-      <div class="achiev-line"></div>
-      <h3>Sistema Marilog</h3>
-      <p>Liderança do desenvolvimento de rastreamento veicular e CRM do zero, unindo logística operacional, full stack e infraestrutura em nuvem.</p>
-    </div>
-    <div class="achiev-card">
-      <div class="achiev-line"></div>
-      <h3>SCTech / SENAI-SC</h3>
-      <p>Qualificação em desenvolvimento de sistemas e inteligência artificial pelo programa do Governo de Santa Catarina.</p>
-    </div>
-    <div class="achiev-card">
-      <div class="achiev-line"></div>
-      <h3>Migração Estratégica</h3>
-      <p>Transição bem-sucedida de Comércio Exterior para Desenvolvimento e Análise de Dados, sem abrir mão da expertise em trade.</p>
-    </div>
-    <div class="achiev-card">
-      <div class="achiev-line"></div>
-      <h3>BI & Automação</h3>
-      <p>Dashboards interativos em Power BI e Excel para controle de armazém e faturamento na ScanSource Brasil.</p>
-    </div>
-    <div class="achiev-card">
-      <div class="achiev-line"></div>
-      <h3>Visão Ponta a Ponta</h3>
-      <p>Experiência completa: importação (Nelson Heusi), exportação (EasyLog) e operação portuária (E.M.M.) — domínio do fluxo inteiro.</p>
-    </div>
-    <div class="achiev-card">
-      <div class="achiev-line"></div>
-      <h3>Infraestrutura Cloud</h3>
-      <p>Deploy e manutenção de ambiente de produção completo na Oracle Cloud com segurança, SSL e integração de APIs externas.</p>
-    </div>
-  </div>
-</section>
-
-<!-- CONTATO -->
-<section class="contact-section" id="contato">
-  <div class="section-label">Contato</div>
-  <h2 class="section-title">Vamos conversar</h2>
-  <p class="section-desc">Aberto a oportunidades em Comércio Exterior, Análise de Dados e Desenvolvimento. Baseado em Itajaí — SC.</p>
-  <div class="contact-cards">
-    <a href="mailto:herschel.mateus@outlook.com.br" class="contact-card">
-      <div class="contact-card-icon">@</div>
-      <div class="contact-card-text">
-        <strong>E-mail</strong>
-        <span>herschel.mateus@outlook.com.br</span>
-      </div>
-    </a>
-    <a href="tel:+5547992842056" class="contact-card">
-      <div class="contact-card-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.9 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-      </div>
-      <div class="contact-card-text">
-        <strong>Telefone</strong>
-        <span>(47) 99284-2056</span>
-      </div>
-    </a>
-    <a href="https://linkedin.com/in/herschel-mateus-a8a178305" target="_blank" class="contact-card">
-      <div class="contact-card-icon">in</div>
-      <div class="contact-card-text">
-        <strong>LinkedIn</strong>
-        <span>herschel-mateus</span>
-      </div>
-    </a>
-  </div>
-</section>
-
-<footer>
-  <p>Herschel Mateus de Goes — Itajaí, SC</p>
-  <p>Comércio Exterior <span>×</span> Full Stack <span>×</span> Dados</p>
-</footer>
-
-<!-- BOTÃO WHATSAPP -->
-<a href="https://wa.me/5547992842056?text=Ol%C3%A1%20Herschel%2C%20vi%20seu%20curriculo%20pelo%20site%2C%20e%20gostaria%20de%20saber%20mais"
-   class="whatsapp-float" target="_blank" rel="noopener">
-  <svg class="whatsapp-icon" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-  </svg>
-  <div class="whatsapp-tooltip">Fale comigo no WhatsApp</div>
-</a>
-
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+      });
+    });
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
+      });
+    }, {threshold:0.1});
+    document.querySelectorAll('.timeline-item,.project-card,.edu-card,.cx-card3d').forEach(el => {
+      el.style.opacity='0'; el.style.transform='translateY(30px)';
+      el.style.transition='opacity .6s ease, transform .6s ease';
+      obs.observe(el);
+    });
+  </script>
 </body>
 </html>
