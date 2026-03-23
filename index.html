@@ -170,6 +170,22 @@
       .timeline::before { left: 20px; }
       .timeline-dot { width: 42px; height: 42px; font-size: .9rem; }
     }
+
+    .project-icon-fa {
+      width: 64px; height: 64px;
+      background: linear-gradient(135deg, var(--cobalt), var(--cobalt-light));
+      border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; color: white;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 24px rgba(26,79,216,0.35);
+      transition: all .3s;
+    }
+    .project-card:hover .project-icon-fa {
+      background: linear-gradient(135deg, var(--mustard), var(--gold));
+      box-shadow: 0 8px 24px rgba(232,160,32,0.4);
+      transform: scale(1.08) rotate(-4deg);
+    }
   </style>
 </head>
 <body>
@@ -383,12 +399,12 @@
     <div class="section-meta"><i class="fas fa-rocket"></i>&nbsp;Realizações</div>
     <h2 class="section-title">Projetos &amp;<br/>Conquistas</h2>
     <div class="projects-grid">
-      <div class="project-card"><div class="project-icon">&#128666;</div><h3>Sistema Marilog</h3><p>Liderança do desenvolvimento de rastreamento veicular e CRM do zero — logística, full stack e cloud em uma plataforma única.</p><div class="project-tags"><span class="project-tag">Python/Flask</span><span class="project-tag">PostgreSQL</span><span class="project-tag">Oracle Cloud</span><span class="project-tag">Leaflet.js</span></div></div>
-      <div class="project-card"><div class="project-icon">&#127891;</div><h3>SCTech / SENAI-SC</h3><p>Qualificação em desenvolvimento de sistemas e inteligência artificial pelo programa do Governo de SC — formação técnica de ponta.</p><div class="project-tags"><span class="project-tag">Dev Sistemas</span><span class="project-tag">IA</span><span class="project-tag">Governo SC</span></div></div>
-      <div class="project-card"><div class="project-icon">&#128202;</div><h3>BI &amp; Automação</h3><p>Dashboards interativos em Power BI e Excel para controle de armazém e faturamento na ScanSource, automatizando relatórios críticos.</p><div class="project-tags"><span class="project-tag">Power BI</span><span class="project-tag">SQL</span><span class="project-tag">Excel Avançado</span></div></div>
-      <div class="project-card"><div class="project-icon">&#128260;</div><h3>Migração Estratégica</h3><p>Transição bem-sucedida de Comércio Exterior para Dev Full Stack e Análise de Dados, combinando expertise das duas áreas.</p><div class="project-tags"><span class="project-tag">Full Stack</span><span class="project-tag">Comex</span><span class="project-tag">Dados</span></div></div>
-      <div class="project-card"><div class="project-icon">&#127758;</div><h3>Visão Ponta a Ponta</h3><p>Experiência completa no ciclo do comércio exterior: importação (Nelson Heusi), exportação (EasyLog) e operação portuária (E.M.M.).</p><div class="project-tags"><span class="project-tag">Importação</span><span class="project-tag">Exportação</span><span class="project-tag">Porto</span></div></div>
-      <div class="project-card"><div class="project-icon">&#129302;</div><h3>Pipeline de Leads</h3><p>Chatbot para pipeline de leads e módulos de CRM com gestão de vagas e candidatos, otimizando processos de negócio na Marilog.</p><div class="project-tags"><span class="project-tag">CRM</span><span class="project-tag">Chatbot</span><span class="project-tag">Automação</span></div></div>
+      <div class="project-card"><div class="project-icon-fa"><i class="fas fa-truck"></i></div><h3>Sistema Marilog</h3><p>Liderança do desenvolvimento de rastreamento veicular e CRM do zero — logística, full stack e cloud em uma plataforma única.</p><div class="project-tags"><span class="project-tag">Python/Flask</span><span class="project-tag">PostgreSQL</span><span class="project-tag">Oracle Cloud</span><span class="project-tag">Leaflet.js</span></div></div>
+      <div class="project-card"><div class="project-icon-fa"><i class="fas fa-graduation-cap"></i></div><h3>SCTech / SENAI-SC</h3><p>Qualificação em desenvolvimento de sistemas e inteligência artificial pelo programa do Governo de SC — formação técnica de ponta.</p><div class="project-tags"><span class="project-tag">Dev Sistemas</span><span class="project-tag">IA</span><span class="project-tag">Governo SC</span></div></div>
+      <div class="project-card"><div class="project-icon-fa"><i class="fas fa-chart-bar"></i></div><h3>BI &amp; Automação</h3><p>Dashboards interativos em Power BI e Excel para controle de armazém e faturamento na ScanSource, automatizando relatórios críticos.</p><div class="project-tags"><span class="project-tag">Power BI</span><span class="project-tag">SQL</span><span class="project-tag">Excel Avançado</span></div></div>
+      <div class="project-card"><div class="project-icon-fa"><i class="fas fa-exchange-alt"></i></div><h3>Migração Estratégica</h3><p>Transição bem-sucedida de Comércio Exterior para Dev Full Stack e Análise de Dados, combinando expertise das duas áreas.</p><div class="project-tags"><span class="project-tag">Full Stack</span><span class="project-tag">Comex</span><span class="project-tag">Dados</span></div></div>
+      <div class="project-card"><div class="project-icon-fa"><i class="fas fa-globe-americas"></i></div><h3>Visão Ponta a Ponta</h3><p>Experiência completa no ciclo do comércio exterior: importação (Nelson Heusi), exportação (EasyLog) e operação portuária (E.M.M.).</p><div class="project-tags"><span class="project-tag">Importação</span><span class="project-tag">Exportação</span><span class="project-tag">Porto</span></div></div>
+      <div class="project-card"><div class="project-icon-fa"><i class="fas fa-robot"></i></div><h3>Pipeline de Leads</h3><p>Chatbot para pipeline de leads e módulos de CRM com gestão de vagas e candidatos, otimizando processos de negócio na Marilog.</p><div class="project-tags"><span class="project-tag">CRM</span><span class="project-tag">Chatbot</span><span class="project-tag">Automação</span></div></div>
     </div>
   </section>
 
